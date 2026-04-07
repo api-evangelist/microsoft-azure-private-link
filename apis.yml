@@ -1,16 +1,14 @@
 aid: microsoft-azure-private-link
-url: 
-  https://raw.githubusercontent.com/api-evangelist/microsoft-azure-private-link/refs/heads/main/apis.yml
+url: https://raw.githubusercontent.com/api-evangelist/microsoft-azure-private-link/refs/heads/main/apis.yml
 apis:
   - aid: microsoft-azure-private-link:rest-api
     name: Azure Private Link REST API
     tags:
-      - Private Link
-      - Private Endpoint
       - Network Security
+      - Private Endpoint
+      - Private Link
       - VNet
-    image: 
-      https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
     baseURL: https://management.azure.com/
     humanURL: https://learn.microsoft.com/en-us/rest/api/privatelink/
     properties:
