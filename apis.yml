@@ -12,6 +12,8 @@ apis:
     baseURL: https://management.azure.com/
     humanURL: https://learn.microsoft.com/en-us/rest/api/privatelink/
     properties:
+      - url: openapi/microsoft-azure-private-link-openapi.yml
+        type: OpenAPI
       - url: https://learn.microsoft.com/en-us/rest/api/privatelink/
         type: Documentation
     description: >-
