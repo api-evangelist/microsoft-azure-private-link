@@ -1,0 +1,229 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Azure Private Link REST API — Private Endpoints
+  description: 'Azure Private Link REST API — Private Endpoints. 6 operations. Lead operation: Azure Private Link REST API
+    List by subscription. Self-contained Naftiko capability covering one Microsoft Azure Private Link business surface.'
+  tags:
+  - Microsoft Azure Private Link
+  - Private Endpoints
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_AZURE_PRIVATE_LINK_API_KEY: MICROSOFT_AZURE_PRIVATE_LINK_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: microsoft-azure-private-link-private-endpoints
+    baseUri: https://management.azure.com
+    description: Azure Private Link REST API — Private Endpoints business capability. Self-contained, no shared references.
+    resources:
+    - name: subscriptions-subscriptionId-providers-Microsoft.Network-privateEndpoints
+      path: /subscriptions/{subscriptionId}/providers/Microsoft.Network/privateEndpoints
+      operations:
+      - name: listprivateendpointsbysubscription
+        method: GET
+        description: Azure Private Link REST API List by subscription
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: subscriptions-subscriptionId-resourceGroups-resourceGroupName-providers-Microsof
+      path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateEndpoints
+      operations:
+      - name: listprivateendpointsbyresourcegroup
+        method: GET
+        description: Azure Private Link REST API List by resource group
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: subscriptions-subscriptionId-resourceGroups-resourceGroupName-providers-Microsof
+      path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateEndpoints/{name}
+      operations:
+      - name: getprivateendpoints
+        method: GET
+        description: Azure Private Link REST API Get resource
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createorupdateprivateendpoints
+        method: PUT
+        description: Azure Private Link REST API Create or update resource
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: updateprivateendpoints
+        method: PATCH
+        description: Azure Private Link REST API Update resource
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: deleteprivateendpoints
+        method: DELETE
+        description: Azure Private Link REST API Delete resource
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: bearer
+      token: '{{env.MICROSOFT_AZURE_PRIVATE_LINK_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: microsoft-azure-private-link-private-endpoints-rest
+    port: 8080
+    description: REST adapter for Azure Private Link REST API — Private Endpoints. One Spectral-compliant resource per consumed
+      operation, prefixed with /v1.
+    resources:
+    - path: /v1/subscriptions/{subscriptionid}/providers/microsoft-network/privateendpoints
+      name: subscriptions-subscriptionid-providers-microsoft-network-privateendpoints
+      description: REST surface for subscriptions-subscriptionId-providers-Microsoft.Network-privateEndpoints.
+      operations:
+      - method: GET
+        name: listprivateendpointsbysubscription
+        description: Azure Private Link REST API List by subscription
+        call: microsoft-azure-private-link-private-endpoints.listprivateendpointsbysubscription
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/subscriptions/{subscriptionid}/resourcegroups/{resourcegroupname}/providers/microsoft-network/privateendpoints
+      name: subscriptions-subscriptionid-resourcegroups-resourcegroupname-providers-microsof
+      description: REST surface for subscriptions-subscriptionId-resourceGroups-resourceGroupName-providers-Microsof.
+      operations:
+      - method: GET
+        name: listprivateendpointsbyresourcegroup
+        description: Azure Private Link REST API List by resource group
+        call: microsoft-azure-private-link-private-endpoints.listprivateendpointsbyresourcegroup
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/subscriptions/{subscriptionid}/resourcegroups/{resourcegroupname}/providers/microsoft-network/privateendpoints/{name}
+      name: subscriptions-subscriptionid-resourcegroups-resourcegroupname-providers-microsof
+      description: REST surface for subscriptions-subscriptionId-resourceGroups-resourceGroupName-providers-Microsof.
+      operations:
+      - method: GET
+        name: getprivateendpoints
+        description: Azure Private Link REST API Get resource
+        call: microsoft-azure-private-link-private-endpoints.getprivateendpoints
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: createorupdateprivateendpoints
+        description: Azure Private Link REST API Create or update resource
+        call: microsoft-azure-private-link-private-endpoints.createorupdateprivateendpoints
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: updateprivateendpoints
+        description: Azure Private Link REST API Update resource
+        call: microsoft-azure-private-link-private-endpoints.updateprivateendpoints
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deleteprivateendpoints
+        description: Azure Private Link REST API Delete resource
+        call: microsoft-azure-private-link-private-endpoints.deleteprivateendpoints
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: microsoft-azure-private-link-private-endpoints-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Azure Private Link REST API — Private Endpoints. One tool per consumed operation, routed
+      inline through this capability's consumes block.
+    tools:
+    - name: azure-private-link-rest-api
+      description: Azure Private Link REST API List by subscription
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-azure-private-link-private-endpoints.listprivateendpointsbysubscription
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: azure-private-link-rest-api-2
+      description: Azure Private Link REST API List by resource group
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-azure-private-link-private-endpoints.listprivateendpointsbyresourcegroup
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: azure-private-link-rest-api-3
+      description: Azure Private Link REST API Get resource
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-azure-private-link-private-endpoints.getprivateendpoints
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: azure-private-link-rest-api-4
+      description: Azure Private Link REST API Create or update resource
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: microsoft-azure-private-link-private-endpoints.createorupdateprivateendpoints
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: azure-private-link-rest-api-5
+      description: Azure Private Link REST API Update resource
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: microsoft-azure-private-link-private-endpoints.updateprivateendpoints
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: azure-private-link-rest-api-6
+      description: Azure Private Link REST API Delete resource
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: microsoft-azure-private-link-private-endpoints.deleteprivateendpoints
+      outputParameters:
+      - type: object
+        mapping: $.
