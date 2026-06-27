@@ -32,7 +32,7 @@ common:
     url: https://privacy.microsoft.com/en-us/privacystatement
   - type: Support
     url: https://support.microsoft.com/
-  - type: LLMsTxt
+  - type: LlmsText
     url: https://portal.azure.com/llms.txt
 modified: '2026-05-19'
 maintainers:
