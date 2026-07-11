@@ -20,6 +20,8 @@ apis:
       Azure Private Link REST API provides management of private endpoints and private link services for accessing Azure
       PaaS services over private IP addresses within virtual networks, eliminating exposure to the public internet.
 common:
+  - type: OAuthScopes
+    url: scopes/microsoft-azure-private-link-scopes.yml
   - type: GitHubOrganization
     url: https://github.com/Azure
   - type: Portal
