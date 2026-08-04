@@ -1,0 +1,16 @@
+{
+  "provider": "microsoft-azure-private-link",
+  "sources": [
+    "microsoft-azure-private-link-operations-api-openapi.yml",
+    "microsoft-azure-private-link-private-endpoints-api-openapi.yml"
+  ],
+  "outputs": [
+    "microsoft-azure-private-link-operations-api-openapi.yml",
+    "microsoft-azure-private-link-private-endpoints-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
