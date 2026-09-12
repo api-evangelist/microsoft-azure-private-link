@@ -55,6 +55,8 @@ apis:
   - type: Documentation
     url: https://learn.microsoft.com/en-us/rest/api/privatelink/
 common:
+  - type: Website
+    url: https://www.microsoft.com/
   - type: AgenticAccess
     url: agentic-access/microsoft-azure-private-link-agentic-access.yml
   - type: DomainSecurity
@@ -84,3 +86,5 @@ maintainers:
 description: >-
   Microsoft Azure Private Link enables access to Azure PaaS services and Azure-hosted customer-owned services over a
   private endpoint in a virtual network, eliminating exposure to the public internet.
+x-parent: microsoft-azure
+x-relationship: product

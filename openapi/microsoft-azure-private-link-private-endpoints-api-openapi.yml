@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   title: Azure Private Link REST Operations Private Endpoints API
   description: Azure Private Link enables private connectivity to PaaS services over the Microsoft backbone. The REST API manages private endpoints, private link services, and private DNS zone groups.
@@ -170,16 +170,18 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
 components:
   schemas:
-    ResourceList:
+    ErrorResponse:
       type: object
       properties:
-        value:
-          type: array
-          items:
-            $ref: '#/components/schemas/Resource'
-        nextLink:
-          type: string
-          description: URL to the next page of results.
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+            message:
+              type: string
+            target:
+              type: string
     Resource:
       type: object
       properties:
@@ -202,31 +204,29 @@ components:
         properties:
           type: object
           description: Resource-specific properties.
-    ErrorResponse:
+    ResourceList:
       type: object
       properties:
-        error:
-          type: object
-          properties:
-            code:
-              type: string
-            message:
-              type: string
-            target:
-              type: string
+        value:
+          type: array
+          items:
+            $ref: '#/components/schemas/Resource'
+        nextLink:
+          type: string
+          description: URL to the next page of results.
   parameters:
-    resourceGroupName:
-      name: resourceGroupName
-      in: path
-      required: true
-      description: The name of the resource group.
-      schema:
-        type: string
     apiVersion:
       name: api-version
       in: query
       required: true
       description: The API version to use for this operation.
+      schema:
+        type: string
+    resourceGroupName:
+      name: resourceGroupName
+      in: path
+      required: true
+      description: The name of the resource group.
       schema:
         type: string
     subscriptionId:
