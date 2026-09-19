@@ -32,7 +32,8 @@ apis:
 - aid: microsoft-azure-private-link:microsoft-azure-private-link-operations-api
   name: microsoft-azure-private-link Operations API
   description: Operations operations
-  humanURL: https://learn.microsoft.com/en-us/rest/api/privatelink/
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/microsoft-azure-private-link.png
+  humanURL: https://learn.microsoft.com/en-us/rest/api/azure/
   baseURL: https://management.azure.com/
   tags: []
   tags_raw:
@@ -41,50 +42,156 @@ apis:
   - type: OpenAPI
     url: openapi/microsoft-azure-private-link-operations-api-openapi.yml
   - type: Documentation
-    url: https://learn.microsoft.com/en-us/rest/api/privatelink/
+    url: https://learn.microsoft.com/en-us/rest/api/azure/
+  - type: Overlay
+    url: overlays/microsoft-azure-private-link-operations-api-overlay.yaml
 - aid: microsoft-azure-private-link:microsoft-azure-private-link-private-endpoints-api
   name: microsoft-azure-private-link Private Endpoints API
   description: Private Endpoints operations
-  humanURL: https://learn.microsoft.com/en-us/rest/api/privatelink/
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/microsoft-azure-private-link.png
+  humanURL: https://learn.microsoft.com/en-us/rest/api/virtualnetwork/private-endpoints
   baseURL: https://management.azure.com/
   tags:
   - Private Endpoints
   properties:
   - type: OpenAPI
     url: openapi/microsoft-azure-private-link-private-endpoints-api-openapi.yml
+  - name: Private endpoints (Microsoft, verbatim Swagger 2.0, api-version 2025-03-01)
+    type: OpenAPI
+    url: openapi/_original/microsoft-azure-private-link-private-endpoint-swagger.json
+  - name: Private link services (Microsoft, verbatim Swagger 2.0, api-version 2025-03-01)
+    type: OpenAPI
+    url: openapi/_original/microsoft-azure-private-link-private-link-service-swagger.json
+  - name: Upstream contract source (Azure/azure-rest-api-specs)
+    type: OpenAPI
+    url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/network/resource-manager/Microsoft.Network/Network/stable/2025-03-01/privateEndpoint.json
   - type: Documentation
-    url: https://learn.microsoft.com/en-us/rest/api/privatelink/
+    url: https://learn.microsoft.com/en-us/rest/api/virtualnetwork/private-endpoints
+  - type: APIReference
+    url: https://learn.microsoft.com/en-us/rest/api/virtualnetwork/private-link-services
+  - type: Overlay
+    url: overlays/microsoft-azure-private-link-private-endpoints-api-overlay.yaml
 common:
   - type: Website
     url: https://www.microsoft.com/
-  - type: AgenticAccess
-    url: agentic-access/microsoft-azure-private-link-agentic-access.yml
-  - type: DomainSecurity
-    url: security/microsoft-azure-private-link-domain-security.yml
-  - type: Authentication
-    url: authentication/microsoft-azure-private-link-authentication.yml
-  - type: OAuthScopes
-    url: scopes/microsoft-azure-private-link-scopes.yml
-  - type: GitHubOrganization
-    url: https://github.com/Azure
+  - type: DeveloperPortal
+    url: https://portal.azure.com/
   - type: Portal
     url: https://portal.azure.com/
+  - type: Documentation
+    url: https://learn.microsoft.com/en-us/azure/private-link/private-link-overview
+  - type: APIReference
+    url: https://learn.microsoft.com/en-us/rest/api/virtualnetwork/private-endpoints
+  - type: GettingStarted
+    url: https://learn.microsoft.com/en-us/azure/private-link/create-private-endpoint-portal
+  - type: Quickstart
+    url: https://learn.microsoft.com/en-us/azure/private-link/create-private-endpoint-portal
+  - type: Blog
+    url: https://techcommunity.microsoft.com/category/azure/blog/azurenetworkingblog
+  - type: Roadmap
+    url: https://azure.microsoft.com/en-us/updates/?category=networking
+  - type: GitHubOrganization
+    url: https://github.com/Azure
   - type: Pricing
-    url: https://azure.microsoft.com/en-us/pricing/
+    url: https://azure.microsoft.com/en-us/pricing/details/private-link/
+  - type: Plans
+    url: plans/microsoft-azure-private-link-plans-pricing.yml
+  - type: SignUp
+    url: https://azure.microsoft.com/en-us/free/
   - type: TermsOfService
     url: https://www.microsoft.com/en-us/legal/terms-of-use
   - type: PrivacyPolicy
     url: https://privacy.microsoft.com/en-us/privacystatement
   - type: Support
-    url: https://support.microsoft.com/
-  - type: LlmsText
-    url: https://portal.azure.com/llms.txt
-modified: '2026-05-19'
+    url: https://azure.microsoft.com/en-us/support/options/
+  - type: AgenticAccess
+    url: agentic-access/microsoft-azure-private-link-agentic-access.yml
+  - type: Authentication
+    url: authentication/microsoft-azure-private-link-authentication.yml
+  - type: OAuthScopes
+    url: scopes/microsoft-azure-private-link-scopes.yml
+  - type: Conventions
+    url: conventions/microsoft-azure-private-link-conventions.yml
+  - type: Idempotency
+    url: conventions/microsoft-azure-private-link-conventions.yml
+  - type: ErrorCatalog
+    url: errors/microsoft-azure-private-link-problem-types.yml
+  - type: RateLimits
+    url: rate-limits/microsoft-azure-private-link-rate-limits.yml
+  - type: DataModel
+    url: data-model/microsoft-azure-private-link-data-model.yml
+  - type: Lifecycle
+    url: lifecycle/microsoft-azure-private-link-lifecycle.yml
+  - type: StatusPage
+    url: https://azure.status.microsoft/en-us/status
+  - type: Deprecation
+    url: https://azure.microsoft.com/en-us/updates/?updateType=retirements
+  - type: ChangeLog
+    url: changelog/microsoft-azure-private-link-changelog.yml
+  - type: Packages
+    url: packages/microsoft-azure-private-link-packages.yml
+  - type: SDKs
+    url: packages/microsoft-azure-private-link-packages.yml
+  - type: CLI
+    url: cli/microsoft-azure-private-link-cli.yml
+  - type: AgentSkill
+    url: skills/_index.yml
+  - type: LLMsTxt
+    url: llms/microsoft-azure-private-link-llms.txt
+  - type: Conformance
+    url: conformance/microsoft-azure-private-link-conformance.yml
+  - type: Compliance
+    url: https://learn.microsoft.com/en-us/azure/compliance/
+  - type: TrustCenter
+    url: security/microsoft-azure-private-link-trust-center.yml
+  - type: Security
+    url: https://www.microsoft.com/en-us/msrc/cvd
+  - type: VulnerabilityDisclosure
+    url: security/microsoft-azure-private-link-vulnerability-disclosure.yml
+  - type: SecurityTxt
+    url: well-known/microsoft-azure-private-link-security.txt
+  - type: WellKnown
+    url: well-known/microsoft-azure-private-link-well-known.yml
+  - type: DomainSecurity
+    url: security/microsoft-azure-private-link-domain-security.yml
+tags:
+  - Networking
+  - Private Connectivity
+  - Cloud Infrastructure
+  - Virtual Networks
+  - DNS
+  - Security
+  - Azure Resource Manager
+  - Infrastructure-as-a-Service
+tags_raw:
+  - Networking
+  - Private Connectivity
+  - Cloud Infrastructure
+  - Virtual Networks
+  - DNS
+  - Security
+  - Azure Resource Manager
+  - Infrastructure as a Service
+created: '2026-05-04'
+modified: '2026-09-17'
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
 description: >-
-  Microsoft Azure Private Link enables access to Azure PaaS services and Azure-hosted customer-owned services over a
-  private endpoint in a virtual network, eliminating exposure to the public internet.
+  Microsoft Azure Private Link gives a virtual network a private IP address onto an Azure PaaS service, a
+  partner service, or a service the customer publishes themselves, so traffic reaches it across the
+  Microsoft backbone and never traverses the public internet. It has two sides. A consumer creates a
+  private endpoint pointing at a target resource id and attaches a private DNS zone group so the service's
+  own hostname resolves to that private address. A producer publishes a private link service in front of a
+  Standard Load Balancer, hands out an opaque alias, and approves or rejects the connections that arrive —
+  including connections from other tenants. Both sides are managed through the Azure Resource Manager REST
+  API at management.azure.com, which Microsoft publishes as Swagger 2.0 in its azure-rest-api-specs
+  repository: 24 operations at api-version 2025-03-01, OAuth2 bearer only, with no API key and no
+  anonymous surface.
 x-parent: microsoft-azure
 x-relationship: product
+x-enrichment:
+  date: '2026-09-17'
+  status: enriched
+  artifacts_added: 23
+  pass: local-v3
