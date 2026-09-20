@@ -2,16 +2,16 @@
 kin_checks:
   slug: microsoft-azure-private-link
   schema_version: 0.22.0
-  scored_at: '2026-09-18'
-  run_ts: 2026-09-18T231945
+  scored_at: '2026-09-19'
+  run_ts: 2026-09-19T193153
   note: Actionable checks (missed + partial) in `checks`, plus the ids that did not
     apply in `na`. Everything else in rubric/scoring-0.22.0.yml was earned; counts
     below let you verify that.
   counts:
     total: 136
-    earned: 53
+    earned: 54
     partial: 9
-    missed: 48
+    missed: 47
     na: 26
   checks:
   - id: multiple_apis
@@ -76,9 +76,6 @@ kin_checks:
     status: missed
   - id: examples_published
     status: missed
-  - id: documentation_present
-    status: missed
-    detail: pointer liveness 0.0
   - id: sdk_count_3
     status: missed
   - id: console_or_sandbox
@@ -135,8 +132,8 @@ kin_checks:
     detail: 'authorship: derived'
   - id: auth_clarity
     status: partial
-    earned: 3.5
-    detail: 'grade: bearer'
+    earned: 9.0
+    detail: 'grade: served'
   - id: idempotency
     status: partial
     earned: 4.5

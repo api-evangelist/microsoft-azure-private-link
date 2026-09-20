@@ -1,0 +1,14 @@
+{
+  "repo": "microsoft-azure-private-link",
+  "feeds": [
+    {
+      "source": "https://learn.microsoft.com/en-us/azure/private-link/create-private-endpoint-portal",
+      "feed_url": "https://learn.microsoft.com/en-us/azure/private-link/create-private-endpoint-portal",
+      "title": "",
+      "saved": 0,
+      "method": "none"
+    }
+  ],
+  "post_count": 0,
+  "fetched": "2026-09-19T20:17:39Z"
+}
