@@ -1,0 +1,68 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements — Azure Private Link Private Endpoints API
+  version: 1.0.0
+x-provenance:
+  generated: '2026-09-17'
+  method: generated
+  source: openapi/microsoft-azure-private-link-private-endpoints-api-openapi.yml
+  extends: openapi/microsoft-azure-private-link-private-endpoints-api-openapi.yml
+actions:
+  - target: $.info
+    description: Record the upstream contract and version posture
+    update:
+      x-provider: Microsoft
+      x-product: Azure Private Link
+      x-contract-source: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/Network/stable/2025-03-01
+      x-verbatim-contract: openapi/_original/microsoft-azure-private-link-private-endpoint-swagger.json
+      x-current-api-version: '2026-01-01'
+      x-api-version-required: true
+  - target: $.info
+    description: Point at live reference documentation
+    update:
+      x-documentation: https://learn.microsoft.com/en-us/rest/api/virtualnetwork/private-endpoints
+      x-quickstart: https://learn.microsoft.com/en-us/azure/private-link/create-private-endpoint-portal
+  - target: $
+    description: Attach the enrichment artifact set
+    update:
+      x-artifacts:
+        conventions: conventions/microsoft-azure-private-link-conventions.yml
+        errors: errors/microsoft-azure-private-link-problem-types.yml
+        data-model: data-model/microsoft-azure-private-link-data-model.yml
+        rate-limits: rate-limits/microsoft-azure-private-link-rate-limits.yml
+        skills: skills/_index.yml
+  - target: $.components.securitySchemes.azure_auth
+    description: Record OIDC discovery and the resource scope callers actually request
+    update:
+      x-openid-configuration: https://login.microsoftonline.com/common/v2.0/.well-known/openid-configuration
+      x-resource-scope: https://management.azure.com/.default
+      x-rbac-role: Network Contributor
+  - target: $.paths.*.get
+    description: Mark list/get operations, including the continuation-URL pagination the contract does not describe
+    update:
+      x-agentic-consequence: read
+      x-idempotent: true
+      x-pagination-style: continuation-url
+      x-pagination-field: nextLink
+  - target: $.paths.*.put
+    description: Writes are declaratively idempotent but carry no replay token, and creates are long-running
+    update:
+      x-agentic-consequence: write
+      x-idempotent: true
+      x-idempotency-mechanism: http-native-put
+      x-replay-token: false
+      x-long-running: true
+      x-polling-header: Azure-AsyncOperation
+      x-concurrency-control: If-Match / etag
+  - target: $.paths.*.delete
+    description: Deletes on this API are irreversible and asynchronous — say so where an agent will read it
+    update:
+      x-agentic-consequence: destructive
+      x-idempotent: true
+      x-long-running: true
+      x-reversible: false
+      x-reversal-operation: null
+      x-reversal-window: null
+      x-agent-guidance: >-
+        No soft delete, restore or retention window is published. GET the resource and keep the body
+        before deleting; that capture is the only rollback.

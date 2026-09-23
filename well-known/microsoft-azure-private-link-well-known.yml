@@ -1,0 +1,125 @@
+generated: '2026-09-17'
+method: probed
+source: live HTTP probes of every host this record knows
+note: 'Probed the registrable domains (microsoft.com, azure.com), the API baseURL host (management.azure.com),
+  the OpenAPI servers[] host (management.azure.com), the docs host (learn.microsoft.com), the console
+  host (portal.azure.com), and the authorization host named by the OpenAPI azure_auth flow (login.microsoftonline.com).
+  Two real documents are served: Microsoft''s security.txt on www.microsoft.com and the Entra ID OpenID
+  Connect discovery document on login.microsoftonline.com. Everything else 404s, 400s or redirects. A
+  200 that returned an HTML shell is recorded as a miss, not a document.'
+hosts:
+- host: www.microsoft.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 200
+    file: microsoft-azure-private-link-security.txt
+    content_type: text/plain
+    note: Real RFC 9116 security.txt. Names the MSRC researcher portal as Contact, the Microsoft bug bounty
+      and Coordinated Vulnerability Disclosure pages as Policy, and an Expires of 2026-09-23. A first
+      fetch returned a 200 carrying an HTML "high demand" interstitial; a retry returned the real text
+      document, which is what is saved here.
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+- host: microsoft.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 301
+    note: redirects to www.microsoft.com, where the document is served
+  - path: /.well-known/openid-configuration
+    status: 301
+  - path: /.well-known/oauth-authorization-server
+    status: 301
+  - path: /.well-known/api-catalog
+    status: 301
+  - path: /.well-known/ai-plugin.json
+    status: 301
+  - path: /.well-known/agent-card.json
+    status: 301
+- host: azure.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 301
+  - path: /.well-known/openid-configuration
+    status: 301
+  - path: /.well-known/oauth-authorization-server
+    status: 301
+  - path: /.well-known/api-catalog
+    status: 301
+  - path: /.well-known/ai-plugin.json
+    status: 301
+  - path: /.well-known/agent-card.json
+    status: 301
+- host: management.azure.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 400
+    note: Azure Resource Manager answers every unrecognised path with 400 MissingApiVersionParameter.
+      Not a document, and not a 404 either — the gateway never routes /.well-known/.
+  - path: /.well-known/openid-configuration
+    status: 400
+  - path: /.well-known/oauth-authorization-server
+    status: 400
+  - path: /.well-known/api-catalog
+    status: 400
+  - path: /.well-known/ai-plugin.json
+    status: 400
+  - path: /.well-known/agent-card.json
+    status: 400
+- host: learn.microsoft.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 302
+    note: 302 to the Learn locale router; the followed response is the docs 404 HTML shell, not a document
+  - path: /.well-known/openid-configuration
+    status: 302
+  - path: /.well-known/oauth-authorization-server
+    status: 302
+  - path: /.well-known/api-catalog
+    status: 302
+  - path: /.well-known/ai-plugin.json
+    status: 302
+  - path: /.well-known/agent-card.json
+    status: 302
+- host: portal.azure.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+- host: login.microsoftonline.com
+  note: Not an apis.yml host. Probed because the OpenAPI azure_auth securityScheme names https://login.microsoftonline.com/common/oauth2/authorize
+    as its authorizationUrl, which makes this the authorization server for every operation in the contract.
+  documents:
+  - path: /common/v2.0/.well-known/openid-configuration
+    status: 200
+    file: microsoft-azure-private-link-openid-configuration.json
+    content_type: application/json
+    note: Real OpenID Connect discovery document for the Microsoft Entra ID common tenant. issuer https://login.microsoftonline.com/{tenantid}/v2.0,
+      authorization/token/jwks endpoints, response_types code / id_token / code id_token / id_token token.
+  - path: /.well-known/openid-configuration
+    status: 404
+    note: discovery is tenant-scoped; the document lives under /{tenant}/v2.0/
+  - path: /common/.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404

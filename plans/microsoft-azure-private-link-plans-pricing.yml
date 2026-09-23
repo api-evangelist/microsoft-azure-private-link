@@ -3,145 +3,124 @@ specificationVersion: '0.1'
 schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
 provider: microsoft-azure-private-link
 providerId: microsoft-azure-private-link
+generated: '2026-09-17'
+method: probed
+source: >-
+  https://prices.azure.com/api/retail/prices?$filter=productName eq 'Virtual Network Private Link'
+docs: https://azure.microsoft.com/en-us/pricing/details/private-link/
 created: '2026-05-04'
-# Provenance stamped 2026-08-11: this artifact was written by the API Evangelist
-# bulk sweep dated 2026-05-04, not harvested from the provider. See roadmap#35.
-method: generated
-modified: '2026-05-04'
-tags: []
-description: Machine-readable plans and pricing scaffold for this API provider. Conforms to the API Commons
-  Plans schema. Tier limits and prices are scaffold defaults; replace with provider-published values.
-plans:
-  - id: microsoft-azure-private-link-free
-    name: Free
-    type: freemium
-    description: Free entry tier for the microsoft-azure-private-link API surface. Intended for evaluation,
-      prototyping, and low-volume integrations. Real limits and pricing must be reconciled with the provider's
-      published plan documentation.
-    entries:
-      - label: API Requests
-        description: Monthly API request quota across all included endpoints
-        name: api_requests
-        type: quota
-        metric: requests
-        limit: 1000
-        timeFrame: month
-        geo: global
-        domains:
-          - https://management.azure.com/
-        unit: 1
-        price: '0.00'
-        userMultiplied: false
-      - label: Rate Limit
-        description: Maximum requests per minute on the free tier
-        name: rate_limit
-        type: rate
-        metric: requests_per_minute
-        limit: 10
-        timeFrame: minute
-        geo: global
-        domains:
-          - https://management.azure.com/
-        unit: 1
-        price: '0.00'
-        userMultiplied: false
-    elements:
-      - name: Public Documentation
-      - name: Community Support
-      - name: Sandbox Access
-      - name: Azure Private Link REST API
-  - id: microsoft-azure-private-link-pro
-    name: Professional
-    type: paid
-    description: Production tier for microsoft-azure-private-link. Provides higher quotas, priority support,
-      and access to the broader API portfolio. Pricing placeholder; align with the provider's pricing
-      page.
-    entries:
-      - label: API Requests
-        description: Monthly API request quota
-        name: api_requests
-        type: quota
-        metric: requests
-        limit: 100000
-        timeFrame: month
-        geo: global
-        domains:
-          - https://management.azure.com/
-        unit: 1
-        price: TBD
-        userMultiplied: false
-      - label: Rate Limit
-        description: Maximum requests per minute on the professional tier
-        name: rate_limit
-        type: rate
-        metric: requests_per_minute
-        limit: 100
-        timeFrame: minute
-        geo: global
-        domains:
-          - https://management.azure.com/
-        unit: 1
-        price: '0.00'
-        userMultiplied: false
-      - label: Overage
-        description: Per-request price after monthly quota is exceeded
-        name: overage
-        type: metered
-        metric: requests
-        limit: -1
-        timeFrame: month
-        geo: global
-        domains:
-          - https://management.azure.com/
-        unit: 1000
-        price: TBD
-        userMultiplied: false
-    elements:
-      - name: All Production Endpoints
-      - name: Email Support
-      - name: SLA Targets
-      - name: Webhook Subscriptions
-      - name: Azure Private Link REST API
-  - id: microsoft-azure-private-link-enterprise
-    name: Enterprise
-    type: enterprise
-    description: Custom-negotiated tier for microsoft-azure-private-link. Includes dedicated capacity,
-      contractual SLAs, security review, data residency options, and named technical account management.
-    entries:
-      - label: API Requests
-        description: Negotiated request volume; -1 indicates uncapped subject to fair use
-        name: api_requests
-        type: quota
-        metric: requests
-        limit: -1
-        timeFrame: month
-        geo: configurable
-        domains:
-          - https://management.azure.com/
-        unit: 1
-        price: custom
-        userMultiplied: false
-      - label: Rate Limit
-        description: Negotiated burst and steady-state rate
-        name: rate_limit
-        type: rate
-        metric: requests_per_minute
-        limit: 1000
-        timeFrame: minute
-        geo: configurable
-        domains:
-          - https://management.azure.com/
-        unit: 1
-        price: custom
-        userMultiplied: false
-    elements:
-      - name: Unlimited / Negotiated Volume
-      - name: 24/7 Dedicated Support
-      - name: Contractual SLA
-      - name: Security & Compliance Review
-      - name: Dedicated Account Manager
-      - name: Custom Data Residency
-      - name: Azure Private Link REST API
+modified: '2026-09-17'
+tags:
+  - Pricing
+  - Metered
+  - Networking
+description: >-
+  Azure Private Link is sold as metered consumption, not as tiers. There is no free tier, no plan to
+  choose and no per-call API charge — you are billed for the hours a private endpoint exists and for the
+  data that flows through it, at graduated per-GB rates. The management API itself (management.azure.com)
+  is free; what costs money is the resource it creates. Prices below were read on 2026-09-17 from the
+  Azure Retail Prices API, which is Microsoft's own unauthenticated machine-readable price feed — the
+  human pricing page renders its numbers in JavaScript and serves "$-" placeholders to a crawler.
+  Prices shown are USD list for the Global meter region; the feed also carries US Gov and operator-cloud
+  variants (attatlanta1, attdallas1, sgxsingapore1, perth, portland, microsoftrrezm1) at different rates.
+pricing_model: metered-consumption
+plan_count: 0
+plan_count_note: >-
+  Genuinely zero. Azure Private Link publishes no named plans, editions or tiers. Recording plan_count 0
+  with the real meters is the honest shape; the previous version of this file carried a fabricated
+  Free / Professional / Enterprise scaffold with invented request quotas that this pass removed.
+free_tier: false
+currency: USD
+meter_region: Global
+meters:
+  - id: standard-private-endpoint
+    name: Standard Private Endpoint
+    sku: Standard
+    type: Consumption
+    metric: endpoint_hours
+    unit_of_measure: 1 Hour
+    price: 0.01
+    currency: USD
+    effective_start: '2020-02-01'
+    description: Charged per private endpoint, per hour, for as long as the endpoint is provisioned.
+  - id: standard-data-processed-ingress
+    name: Standard Data Processed - Ingress
+    sku: Standard
+    type: Consumption
+    metric: data_processed_gb
+    unit_of_measure: 1 GB
+    effective_start: '2021-11-01'
+    graduated: true
+    tiers:
+      - tier_minimum_units: 0
+        price: 0.01
+        currency: USD
+        band: 0-1 PB
+      - tier_minimum_units: 1000000
+        price: 0.006
+        currency: USD
+        band: 1-5 PB
+      - tier_minimum_units: 5000000
+        price: 0.004
+        currency: USD
+        band: 5+ PB
+    description: >-
+      Inbound data processed through the private endpoint. Direction is judged from the traffic, not the
+      caller — reading from a storage account through a private endpoint bills as Inbound Data Processed.
+  - id: standard-data-processed-egress
+    name: Standard Data Processed - Egress
+    sku: Standard
+    type: Consumption
+    metric: data_processed_gb
+    unit_of_measure: 1 GB
+    effective_start: '2021-11-01'
+    graduated: true
+    tiers:
+      - tier_minimum_units: 0
+        price: 0.01
+        currency: USD
+        band: 0-1 PB
+      - tier_minimum_units: 1000000
+        price: 0.006
+        currency: USD
+        band: 1-5 PB
+      - tier_minimum_units: 5000000
+        price: 0.004
+        currency: USD
+        band: 5+ PB
+    description: Outbound data processed through the private endpoint, graduated on monthly volume.
+  - id: standard-service-endpoint-virtual-network
+    name: Standard Service Endpoint Virtual Network
+    sku: Standard Service Endpoint
+    type: Consumption
+    metric: vnet_hours
+    unit_of_measure: 1 Hour
+    price: 0.1
+    currency: USD
+    effective_start: '2026-04-01'
+    description: >-
+      Standard service endpoint, charged per virtual network per hour. New meter effective 2026-04-01;
+      service endpoints were previously free.
+free:
+  - item: Private Link service
+    price: 0.00
+    note: >-
+      Publishing your own service behind Private Link carries no charge. Microsoft bills the consumer's
+      private endpoint, not the producer's private link service. Confirmed on the pricing page
+      ("No charge for private link service") and by the absence of any private link service meter in the
+      Retail Prices feed.
+  - item: Azure Resource Manager control plane
+    price: 0.00
+    note: >-
+      management.azure.com management calls are not metered. Consumption is throttled rather than billed;
+      see rate-limits/microsoft-azure-private-link-rate-limits.yml.
+notes:
+  - >-
+    Data transfer charges are separate and additive. The pricing page states the Private Link data
+    processed rate is a premium on top of ordinary Azure data transfer pricing.
+  - >-
+    Enterprise Agreement, CSP and reservation discounts are not represented in the Retail Prices feed.
+    These are list prices.
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com

@@ -1,0 +1,232 @@
+generated: '2026-09-17'
+method: derived
+source: >-
+  openapi/_original/microsoft-azure-private-link-private-endpoint-swagger.json and
+  openapi/_original/microsoft-azure-private-link-private-link-service-swagger.json
+  ($ref graph and id-reference fields, api-version 2025-03-01)
+description: >-
+  The Private Link object graph, derived from the harvested Microsoft contract. It has two halves that
+  meet at one join: the CONSUMER side (private endpoint) and the PRODUCER side (private link service).
+  A PrivateEndpoint holds a PrivateLinkServiceConnection carrying the target's resource id; the producer
+  sees the same relationship from the other end as a PrivateEndpointConnection. Both sides read and write
+  the same PrivateLinkServiceConnectionState, which is why approval is a shared, two-party state machine
+  rather than a field either party owns.
+id_scheme:
+  format: /subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Network/{type}/{name}
+  note: >-
+    Every entity is an ARM resource id. There are no opaque prefixed ids — the id IS the path, which means
+    any resource id in a response can be used directly as a request path. The one non-ARM identifier is
+    PrivateLinkService.properties.alias, an opaque provider-issued string a consumer uses to connect
+    without being able to see the service.
+entities:
+  - name: PrivateEndpoint
+    kind: root resource
+    side: consumer
+    key_properties: [id, name, type, location, tags, etag, extendedLocation]
+    properties:
+      - subnet
+      - networkInterfaces
+      - provisioningState
+      - ipVersionType
+      - privateLinkServiceConnections
+      - manualPrivateLinkServiceConnections
+      - customDnsConfigs
+      - applicationSecurityGroups
+      - ipConfigurations
+      - customNetworkInterfaceName
+    operations: [PrivateEndpoints_CreateOrUpdate, PrivateEndpoints_Get, PrivateEndpoints_List, PrivateEndpoints_ListBySubscription, PrivateEndpoints_Delete]
+  - name: PrivateLinkServiceConnection
+    kind: sub-resource
+    side: consumer
+    key_properties: [id, name, type, etag]
+    properties: [provisioningState, privateLinkServiceId, groupIds, requestMessage, privateLinkServiceConnectionState]
+    note: >-
+      Two collections of these hang off a private endpoint. privateLinkServiceConnections is the
+      auto-approved path; manualPrivateLinkServiceConnections is the path that needs the producer to
+      approve, and requestMessage is the note the consumer sends with the request.
+  - name: PrivateDnsZoneGroup
+    kind: sub-resource
+    side: consumer
+    key_properties: [id, name, etag]
+    properties: [provisioningState, privateDnsZoneConfigs]
+    operations: [PrivateDnsZoneGroups_CreateOrUpdate, PrivateDnsZoneGroups_Get, PrivateDnsZoneGroups_List, PrivateDnsZoneGroups_Delete]
+    note: The binding that makes the PaaS hostname resolve to the endpoint's private IP. Without it the endpoint exists and nothing routes to it.
+  - name: PrivateDnsZoneConfig
+    kind: embedded
+    properties: [name, privateDnsZoneId, recordSets]
+  - name: RecordSet
+    kind: embedded
+    properties: [recordType, recordSetName, fqdn, provisioningState, ttl, ipAddresses]
+    note: Read-only. The A records Azure wrote into the zone on your behalf.
+  - name: PrivateEndpointIPConfiguration
+    kind: embedded
+    properties: [name, type, etag, groupId, memberName, privateIPAddress]
+    note: Pins a specific private IP to a specific sub-resource member; the mechanism for static IP assignment.
+  - name: CustomDnsConfigPropertiesFormat
+    kind: embedded
+    properties: [fqdn, ipAddresses]
+    note: What to put in your own DNS if you are not using an Azure private DNS zone.
+  - name: AvailablePrivateEndpointType
+    kind: lookup
+    properties: [name, id, type, resourceName, displayName]
+    operations: [AvailablePrivateEndpointTypes_List, AvailablePrivateEndpointTypes_ListByResourceGroup]
+    note: The catalogue of Azure resource types you can point a private endpoint at, per region.
+  - name: PrivateLinkService
+    kind: root resource
+    side: producer
+    key_properties: [id, name, type, location, tags, etag, extendedLocation]
+    properties:
+      - loadBalancerFrontendIpConfigurations
+      - ipConfigurations
+      - destinationIPAddress
+      - accessMode
+      - networkInterfaces
+      - provisioningState
+      - privateEndpointConnections
+      - visibility
+      - autoApproval
+      - fqdns
+      - alias
+      - enableProxyProtocol
+    operations: [PrivateLinkServices_CreateOrUpdate, PrivateLinkServices_Get, PrivateLinkServices_List, PrivateLinkServices_ListBySubscription, PrivateLinkServices_Delete]
+    note: >-
+      Sits in front of a Standard Load Balancer frontend. visibility and autoApproval are both ResourceSet
+      subscription allow-lists — visibility says who may see the alias, autoApproval says whose connection
+      is accepted without a human.
+  - name: PrivateEndpointConnection
+    kind: sub-resource
+    side: producer
+    key_properties: [id, name, type, etag]
+    properties: [privateEndpoint, privateLinkServiceConnectionState, provisioningState, linkIdentifier, privateEndpointLocation]
+    operations: [PrivateLinkServices_GetPrivateEndpointConnection, PrivateLinkServices_ListPrivateEndpointConnections, PrivateLinkServices_UpdatePrivateEndpointConnection, PrivateLinkServices_DeletePrivateEndpointConnection]
+    note: The producer's view of one consumer's endpoint. Approving or rejecting happens here.
+  - name: PrivateLinkServiceConnectionState
+    kind: embedded
+    properties: [status, description, actionsRequired]
+    shared: true
+    note: >-
+      THE JOIN. The same three fields are written by the producer on PrivateEndpointConnection and read by
+      the consumer on PrivateLinkServiceConnection. status is Pending / Approved / Rejected /
+      Disconnected. This one object is the whole approval protocol.
+  - name: PrivateLinkServiceIpConfiguration
+    kind: sub-resource
+    side: producer
+    properties: [name, type, etag, privateIPAddress, privateIPAllocationMethod, subnet, primary, privateIPAddressVersion]
+    note: NAT IP configurations. These are the addresses the service sees traffic arrive from.
+  - name: ResourceSet
+    kind: embedded
+    properties: [subscriptions]
+  - name: PrivateLinkServiceVisibility
+    kind: response
+    properties: [visible]
+    operations: [PrivateLinkServices_CheckPrivateLinkServiceVisibility, PrivateLinkServices_CheckPrivateLinkServiceVisibilityByResourceGroup]
+  - name: AutoApprovedPrivateLinkService
+    kind: lookup
+    properties: [privateLinkService]
+    operations: [PrivateLinkServices_ListAutoApprovedPrivateLinkServices, PrivateLinkServices_ListAutoApprovedPrivateLinkServicesByResourceGroup]
+relationships:
+  - from: PrivateEndpoint
+    to: PrivateLinkServiceConnection
+    type: has_many
+    via: properties.privateLinkServiceConnections
+  - from: PrivateEndpoint
+    to: PrivateLinkServiceConnection
+    type: has_many
+    via: properties.manualPrivateLinkServiceConnections
+  - from: PrivateEndpoint
+    to: Subnet
+    type: belongs_to
+    via: properties.subnet.id
+    external: virtualNetwork.json
+  - from: PrivateEndpoint
+    to: NetworkInterface
+    type: has_many
+    via: properties.networkInterfaces
+    external: networkInterface.json
+    read_only: true
+  - from: PrivateEndpoint
+    to: ApplicationSecurityGroup
+    type: has_many
+    via: properties.applicationSecurityGroups
+    external: applicationSecurityGroup.json
+  - from: PrivateEndpoint
+    to: PrivateDnsZoneGroup
+    type: has_many
+    via: nested path .../privateEndpoints/{name}/privateDnsZoneGroups
+  - from: PrivateEndpoint
+    to: PrivateEndpointIPConfiguration
+    type: has_many
+    via: properties.ipConfigurations
+  - from: PrivateEndpoint
+    to: CustomDnsConfigPropertiesFormat
+    type: has_many
+    via: properties.customDnsConfigs
+    read_only: true
+  - from: PrivateDnsZoneGroup
+    to: PrivateDnsZoneConfig
+    type: has_many
+    via: properties.privateDnsZoneConfigs
+  - from: PrivateDnsZoneConfig
+    to: RecordSet
+    type: has_many
+    via: properties.recordSets
+    read_only: true
+  - from: PrivateLinkServiceConnection
+    to: PrivateLinkService
+    type: belongs_to
+    via: properties.privateLinkServiceId
+    note: >-
+      THE CROSS-TENANT EDGE. This id can name a resource in a different subscription or tenant entirely —
+      that is the point of the product — so it is the one relationship you cannot resolve by reading your
+      own subscription.
+  - from: PrivateLinkServiceConnection
+    to: PrivateLinkServiceConnectionState
+    type: has_one
+    via: properties.privateLinkServiceConnectionState
+  - from: PrivateLinkService
+    to: PrivateEndpointConnection
+    type: has_many
+    via: properties.privateEndpointConnections
+  - from: PrivateLinkService
+    to: PrivateLinkServiceIpConfiguration
+    type: has_many
+    via: properties.ipConfigurations
+  - from: PrivateLinkService
+    to: FrontendIPConfiguration
+    type: has_many
+    via: properties.loadBalancerFrontendIpConfigurations
+    external: loadBalancer.json
+  - from: PrivateLinkService
+    to: ResourceSet
+    type: has_one
+    via: properties.visibility
+  - from: PrivateLinkService
+    to: ResourceSet
+    type: has_one
+    via: properties.autoApproval
+  - from: PrivateEndpointConnection
+    to: PrivateEndpoint
+    type: belongs_to
+    via: properties.privateEndpoint
+  - from: PrivateEndpointConnection
+    to: PrivateLinkServiceConnectionState
+    type: has_one
+    via: properties.privateLinkServiceConnectionState
+enumerations:
+  privateLinkServiceConnectionState.status:
+    - Pending
+    - Approved
+    - Rejected
+    - Disconnected
+  provisioningState:
+    - Succeeded
+    - Updating
+    - Deleting
+    - Failed
+list_envelope:
+  shape: '{value: [...], nextLink: "..."}'
+  applies_to: [PrivateEndpointListResult, PrivateDnsZoneGroupListResult, AvailablePrivateEndpointTypesResult, PrivateLinkServiceListResult, PrivateEndpointConnectionListResult, AutoApprovedPrivateLinkServicesResult]
+counts:
+  entities: 15
+  relationships: 19
+  external_refs: 5

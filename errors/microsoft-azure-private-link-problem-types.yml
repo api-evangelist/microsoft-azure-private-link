@@ -1,0 +1,145 @@
+generated: '2026-09-17'
+method: derived
+source: >-
+  openapi/_original/microsoft-azure-private-link-private-endpoint-swagger.json,
+  openapi/_original/microsoft-azure-private-link-private-link-service-swagger.json, plus live
+  unauthenticated probes of https://management.azure.com and
+  https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/request-limits-and-throttling
+docs: https://learn.microsoft.com/en-us/azure/azure-resource-manager/troubleshooting/common-deployment-errors
+format: azure-arm-error
+format_note: >-
+  NOT RFC 9457. Azure Resource Manager predates problem+json and ships its own envelope. No operation in
+  either harvested contract declares application/problem+json, and no operation declares a typed 4xx
+  response at all — every error path in the Swagger is a single `default` response whose schema is
+  network.json#/definitions/Error. The status codes and codes below are real, but an agent cannot learn
+  them from the contract; they come from the ARM platform documentation and from probing the live host.
+envelope:
+  content_type: application/json
+  shape: '{"error": {"code": "...", "message": "...", "target": "...", "details": [...], "innerError": "..."}}'
+  fields:
+    - name: error.code
+      type: string
+      description: Machine-readable error code. This is the field to branch on.
+    - name: error.message
+      type: string
+      description: Human-readable message. Interpolates the offending identifier; not stable for matching.
+    - name: error.target
+      type: string
+      description: The request element the error is about, when the service can name one.
+    - name: error.details
+      type: array
+      description: Nested code/target/message triples for multi-part failures.
+    - name: error.innerError
+      type: string
+      description: Inner error message.
+  schema_source: >-
+    https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/network/resource-manager/Microsoft.Network/Network/stable/2025-03-01/network.json#/definitions/Error
+declared_in_contract:
+  typed_4xx_responses: 0
+  default_error_responses: 24
+  note: >-
+    All 24 operations across the two documents declare exactly one error response — `default` — and no
+    status-specific 4xx or 5xx. Success shapes are fully typed; failure shapes are not.
+problem_types:
+  - code: MissingApiVersionParameter
+    status: 400
+    title: api-version query parameter absent
+    detail: The api-version query parameter (?api-version=) is required for all requests.
+    remediation: >-
+      Append ?api-version=2025-03-01 (or the version your SDK pins) to every call. ARM rejects the request
+      at the gateway before it reaches Microsoft.Network, so this fires even on paths that do not exist.
+    evidence: >-
+      Probed 2026-09-17, GET https://management.azure.com/subscriptions/{id}/resourceGroups/x/providers/Microsoft.Network/privateEndpoints
+      with no api-version -> 400 with this exact body.
+    method: probed
+  - code: AuthenticationFailed
+    status: 401
+    title: Authorization header missing or token invalid
+    detail: Authentication failed. The 'Authorization' header is missing.
+    remediation: >-
+      Acquire a bearer token from Microsoft Entra ID for the https://management.azure.com/.default scope
+      and send it as Authorization: Bearer. The 401 carries
+      WWW-Authenticate: Bearer authorization_uri="https://login.windows.net/", error="invalid_token".
+    evidence: Probed 2026-09-17, GET https://management.azure.com/subscriptions?api-version=2022-12-01 -> 401 with this body.
+    method: probed
+  - code: SubscriptionNotFound
+    status: 404
+    title: Subscription does not exist or is not visible to the caller
+    detail: "The subscription '{subscriptionId}' could not be found."
+    remediation: >-
+      Check the subscriptionId path parameter. Note that ARM returns this before evaluating the rest of the
+      path, so a valid api-version plus an unknown subscription 404s regardless of whether the resource
+      exists.
+    evidence: >-
+      Probed 2026-09-17, GET .../subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/privateEndpoints?api-version=2025-03-01
+      -> 404 with this body.
+    method: probed
+  - code: AuthorizationFailed
+    status: 403
+    title: Caller lacks the required RBAC permission
+    detail: The client does not have authorization to perform the action over the scope.
+    remediation: >-
+      Private Link operations need Microsoft.Network/privateEndpoints/* and
+      Microsoft.Network/privateLinkServices/* actions. The built-in Network Contributor role covers them.
+      Approving a private endpoint connection additionally needs the
+      Microsoft.Network/privateLinkServices/privateEndpointConnections/write action on the service side.
+    method: derived
+    derived_from: Azure RBAC documentation for the Microsoft.Network resource provider
+  - code: ResourceNotFound
+    status: 404
+    title: Named resource does not exist in the resource group
+    detail: "The Resource 'Microsoft.Network/privateEndpoints/{name}' under resource group '{rg}' was not found."
+    remediation: Confirm privateEndpointName / serviceName and resourceGroupName. Applies to every Get, Delete and nested DNS zone group call.
+    method: derived
+    derived_from: ARM common error codes
+  - code: ResourceGroupNotFound
+    status: 404
+    title: Resource group does not exist in the subscription
+    remediation: Create the resource group, or correct resourceGroupName.
+    method: derived
+    derived_from: ARM common error codes
+  - code: InvalidResourceName
+    status: 400
+    title: Resource name violates Microsoft.Network naming rules
+    remediation: Private endpoint and private link service names are 1-80 characters, alphanumerics, underscores, periods and hyphens, starting with a letter or number.
+    method: derived
+    derived_from: ARM common error codes
+  - code: MissingSubscriptionRegistration
+    status: 409
+    title: Microsoft.Network is not registered on the subscription
+    remediation: Register the resource provider once per subscription — az provider register --namespace Microsoft.Network.
+    method: derived
+    derived_from: ARM common error codes
+  - code: RequestDisallowedByPolicy
+    status: 403
+    title: Azure Policy blocked the write
+    detail: Resource was disallowed by policy.
+    remediation: >-
+      Common on Private Link because organisations attach deny policies requiring private endpoints, or
+      forbidding them, on specific sub-resources. The response names the policy assignment and definition.
+    method: derived
+    derived_from: ARM common error codes
+  - code: ThrottledRequest
+    status: 429
+    title: Rate limit exhausted
+    remediation: >-
+      Honour Retry-After (seconds). See rate-limits/microsoft-azure-private-link-rate-limits.yml for the
+      ARM token bucket and the Microsoft.Network resource-provider ceilings that produce this.
+    method: searched
+    evidence: https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/request-limits-and-throttling
+async_failures:
+  note: >-
+    Nine of the 24 operations are long-running (x-ms-long-running-operation). A 201 or 202 means accepted,
+    not succeeded. The terminal failure is NOT returned on the original call — it appears as
+    provisioningState "Failed" on the polled Azure-AsyncOperation / Location resource, carrying the same
+    error envelope. An agent that treats 202 as success will miss every asynchronous failure.
+  long_running_operations:
+    - PrivateEndpoints_CreateOrUpdate
+    - PrivateEndpoints_Delete
+    - PrivateDnsZoneGroups_CreateOrUpdate
+    - PrivateDnsZoneGroups_Delete
+    - PrivateLinkServices_CreateOrUpdate
+    - PrivateLinkServices_Delete
+    - PrivateLinkServices_DeletePrivateEndpointConnection
+    - PrivateLinkServices_CheckPrivateLinkServiceVisibility
+    - PrivateLinkServices_CheckPrivateLinkServiceVisibilityByResourceGroup

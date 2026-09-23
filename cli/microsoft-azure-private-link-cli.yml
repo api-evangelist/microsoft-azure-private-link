@@ -1,0 +1,87 @@
+generated: '2026-09-17'
+method: searched
+source: >-
+  https://learn.microsoft.com/en-us/cli/azure/network/private-endpoint,
+  https://learn.microsoft.com/en-us/cli/azure/network/private-link-service
+description: >-
+  Private Link has no CLI of its own. It is administered through the Azure CLI (az) and Azure PowerShell,
+  both first-party Microsoft tools that wrap the same management.azure.com operations this repo harvests.
+  The az command groups below map one-to-one onto the REST operation groups.
+clis:
+  - name: Azure CLI
+    binary: az
+    official: true
+    url: https://learn.microsoft.com/en-us/cli/azure/
+    repository: https://github.com/Azure/azure-cli
+    install:
+      - method: homebrew
+        command: brew install azure-cli
+      - method: apt
+        command: curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+      - method: msi
+        command: winget install -e --id Microsoft.AzureCLI
+      - method: docker
+        command: docker run -it mcr.microsoft.com/azure-cli
+    auth: az login (device code, browser, service principal or managed identity)
+    command_groups:
+      - group: az network private-endpoint
+        docs: https://learn.microsoft.com/en-us/cli/azure/network/private-endpoint
+        status: 200
+        maps_to:
+          - PrivateEndpoints_CreateOrUpdate
+          - PrivateEndpoints_Get
+          - PrivateEndpoints_List
+          - PrivateEndpoints_ListBySubscription
+          - PrivateEndpoints_Delete
+        subgroups:
+          - az network private-endpoint dns-zone-group
+          - az network private-endpoint asg
+          - az network private-endpoint ip-config
+          - az network private-endpoint connection
+      - group: az network private-link-service
+        docs: https://learn.microsoft.com/en-us/cli/azure/network/private-link-service
+        status: 200
+        maps_to:
+          - PrivateLinkServices_CreateOrUpdate
+          - PrivateLinkServices_Get
+          - PrivateLinkServices_List
+          - PrivateLinkServices_ListBySubscription
+          - PrivateLinkServices_Delete
+        subgroups:
+          - az network private-link-service connection
+      - group: az network private-link-resource
+        note: lists the sub-resources (groupIds) a given Azure resource exposes for a private endpoint
+      - group: az network vnet subnet
+        note: >-
+          Needed in practice — a private endpoint requires a subnet, and until recently the subnet needed
+          private-endpoint-network-policies disabled.
+    key_flows:
+      - name: Create a private endpoint to a PaaS resource
+        command: >-
+          az network private-endpoint create --resource-group RG --name PE --vnet-name VNET
+          --subnet SUBNET --private-connection-resource-id RESOURCE_ID --group-id blob
+          --connection-name CONN
+      - name: Approve a pending connection on your own private link service
+        command: az network private-endpoint-connection approve --id CONNECTION_ID --description "approved"
+      - name: Attach a private DNS zone group so the name resolves privately
+        command: >-
+          az network private-endpoint dns-zone-group create --resource-group RG --endpoint-name PE
+          --name default --private-dns-zone privatelink.blob.core.windows.net --zone-name blob
+  - name: Azure PowerShell
+    binary: Az.Network
+    official: true
+    url: https://learn.microsoft.com/en-us/powershell/module/az.network/
+    install:
+      - method: powershellgallery
+        command: Install-Module -Name Az.Network -Repository PSGallery
+    cmdlets:
+      - New-AzPrivateEndpoint
+      - Get-AzPrivateEndpoint
+      - Remove-AzPrivateEndpoint
+      - New-AzPrivateLinkService
+      - Get-AzPrivateLinkService
+      - Approve-AzPrivateEndpointConnection
+      - Deny-AzPrivateEndpointConnection
+note: >-
+  The CLI binaries themselves are distributed through OS package managers rather than a language registry,
+  so they are recorded here and not in packages/, which tracks language SDKs.

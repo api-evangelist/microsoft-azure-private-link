@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Azure Private Link REST Operations Private Endpoints API
+  title: Azure Private Link REST Private Endpoints API
   description: Azure Private Link enables private connectivity to PaaS services over the Microsoft backbone. The REST API manages private endpoints, private link services, and private DNS zone groups.
   version: '2024-01-01'
 servers:
@@ -169,19 +169,29 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
 components:
+  parameters:
+    subscriptionId:
+      name: subscriptionId
+      in: path
+      required: true
+      description: The ID of the target subscription.
+      schema:
+        type: string
+    apiVersion:
+      name: api-version
+      in: query
+      required: true
+      description: The API version to use for this operation.
+      schema:
+        type: string
+    resourceGroupName:
+      name: resourceGroupName
+      in: path
+      required: true
+      description: The name of the resource group.
+      schema:
+        type: string
   schemas:
-    ErrorResponse:
-      type: object
-      properties:
-        error:
-          type: object
-          properties:
-            code:
-              type: string
-            message:
-              type: string
-            target:
-              type: string
     Resource:
       type: object
       properties:
@@ -204,6 +214,18 @@ components:
         properties:
           type: object
           description: Resource-specific properties.
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+            message:
+              type: string
+            target:
+              type: string
     ResourceList:
       type: object
       properties:
@@ -214,28 +236,6 @@ components:
         nextLink:
           type: string
           description: URL to the next page of results.
-  parameters:
-    apiVersion:
-      name: api-version
-      in: query
-      required: true
-      description: The API version to use for this operation.
-      schema:
-        type: string
-    resourceGroupName:
-      name: resourceGroupName
-      in: path
-      required: true
-      description: The name of the resource group.
-      schema:
-        type: string
-    subscriptionId:
-      name: subscriptionId
-      in: path
-      required: true
-      description: The ID of the target subscription.
-      schema:
-        type: string
   securitySchemes:
     azure_auth:
       type: oauth2

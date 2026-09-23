@@ -1,0 +1,90 @@
+generated: '2026-09-17'
+method: searched
+source: >-
+  https://learn.microsoft.com/en-us/rest/api/azure/,
+  https://azure.microsoft.com/en-us/support/legal/sla/private-link/,
+  https://azure.status.microsoft/en-us/status,
+  https://azure.microsoft.com/en-us/updates/?updateType=retirements, and the api-version directory
+  listing of Azure/azure-rest-api-specs
+description: >-
+  Versioning, deprecation, SLA and operational-signal posture for the Azure Private Link control plane.
+versioning:
+  scheme: date-based api-version query parameter
+  format: YYYY-MM-DD (preview versions suffixed -preview)
+  required_on_every_request: true
+  current_stable: '2026-01-01'
+  harvested_in_this_repo: '2025-03-01'
+  stable_versions_published: 61
+  oldest_stable: '2015-06-15'
+  docs: https://learn.microsoft.com/en-us/rest/api/azure/
+  evidence: >-
+    61 stable api-version directories enumerated 2026-09-17 from
+    https://api.github.com/repos/Azure/azure-rest-api-specs/contents/specification/network/resource-manager/Microsoft.Network/Network/stable
+    — 2015-06-15 through 2026-01-01.
+  note: >-
+    Versions are additive and effectively permanent. Microsoft has never removed a Microsoft.Network
+    stable api-version from the service; the 2015-06-15 version is still callable. That is the deprecation
+    policy in practice: you opt in to new behaviour by changing a query parameter, and nothing changes
+    under a pinned client.
+  structural_change_2025:
+    observed: true
+    detail: >-
+      From api-version 2025-05-01 Microsoft stopped publishing privateEndpoint.json and
+      privateLinkService.json as separate documents and folded the same 16 Private Link paths into
+      virtualNetwork.json. The API did not change; the packaging did. Anything that harvests Azure specs
+      by filename breaks at that boundary — which is why this repo pins 2025-03-01 for the verbatim copy.
+deprecation:
+  policy_published: true
+  policy_url: https://azure.microsoft.com/en-us/updates/?updateType=retirements
+  mechanism: >-
+    Azure announces service and feature retirements on the Azure Updates feed with a named retirement
+    date, and Microsoft's public commitment is a minimum of 12 months' notice before an Azure service is
+    retired. Notice is per-service, not per-api-version.
+  sunset_header: false
+  deprecation_header: false
+  rfc8594: false
+  header_note: >-
+    ARM does not emit RFC 8594 Sunset or Deprecation headers on Private Link responses. Deprecation is
+    announced out of band on the Updates feed; there is no runtime signal an agent can read.
+  deprecated_operations_in_contract: 0
+  deprecated_operations_note: >-
+    No operation in either harvested document carries deprecated: true or an x-ms-deprecated marker.
+  active_retirements:
+    - item: Azure SDK for Ruby (azure_mgmt_network)
+      status: retired
+      evidence: Last gem release 2021-03-11; Microsoft directs Ruby users to the CLI or REST API.
+      see: packages/microsoft-azure-private-link-packages.yml
+sla:
+  published: true
+  url: https://azure.microsoft.com/en-us/support/legal/sla/private-link/
+  scope: >-
+    Microsoft publishes a dedicated SLA document for Azure Private Link, separate from the general Azure
+    SLA. Probed 2026-09-17, HTTP 200. The commitment value is rendered client-side on that page and is not
+    reproduced here rather than risk misquoting a contractual number — read it at the URL above.
+  covers: the private endpoint data path
+  note: The management API (management.azure.com) is covered by the Azure Resource Manager availability commitment, not by this document.
+status_page:
+  published: true
+  url: https://azure.status.microsoft/en-us/status
+  history_url: https://azure.status.microsoft/en-us/status/history/
+  scope: per-region, per-service health for Azure Networking including Private Link
+  machine_readable: false
+  machine_readable_note: >-
+    The public status page is an HTML application with no RSS, Atom or JSON status feed. Programmatic
+    health for your own resources is exposed instead through the Azure Resource Health and Service Health
+    APIs (Microsoft.ResourceHealth), which are subscription-scoped and require authentication — so there
+    is no anonymous machine-readable health signal for this service.
+  probed:
+    url: https://azure.status.microsoft/en-us/status
+    status: 200
+    date: '2026-09-17'
+support:
+  url: https://support.microsoft.com/
+  azure_support: https://azure.microsoft.com/en-us/support/options/
+  faq: https://learn.microsoft.com/en-us/azure/private-link/private-link-faq
+availability_matrix:
+  url: https://learn.microsoft.com/en-us/azure/private-link/availability
+  note: >-
+    Microsoft publishes a per-service availability page listing which Azure PaaS services support Private
+    Link, at what GA stage, and in which sub-resource. This is the closest thing Private Link has to a
+    feature-lifecycle document, and it is the page to check before writing code against a new sub-resource.

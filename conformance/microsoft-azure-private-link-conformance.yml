@@ -1,0 +1,114 @@
+generated: '2026-09-17'
+method: derived
+source: >-
+  openapi/_original/*.json, well-known/microsoft-azure-private-link-openid-configuration.json,
+  https://learn.microsoft.com/en-us/azure/compliance/, https://www.microsoft.com/en-us/trust-center
+description: >-
+  Cross-cutting and industry standards this contract does and does not conform to. Reward-only: an
+  absence here is a measurement, not a penalty. Azure Private Link is network infrastructure, so several
+  vertical standards simply do not apply to it.
+conformance:
+  - id: oauth2
+    conforms: true
+    evidence: >-
+      securityDefinitions.azure_auth type oauth2 in both harvested documents, authorizationUrl
+      https://login.microsoftonline.com/common/oauth2/authorize, scope user_impersonation. Applied as a
+      global security requirement, so it covers all 24 operations.
+    method: derived
+  - id: oidc
+    conforms: true
+    evidence: >-
+      https://login.microsoftonline.com/common/v2.0/.well-known/openid-configuration returned HTTP 200
+      on 2026-09-17 with a complete OpenID Connect discovery document — issuer
+      https://login.microsoftonline.com/{tenantid}/v2.0, jwks_uri, response_types code / id_token /
+      code id_token / id_token token. Saved verbatim to
+      well-known/microsoft-azure-private-link-openid-configuration.json.
+    method: probed
+  - id: rfc9116
+    name: security.txt
+    conforms: true
+    evidence: >-
+      https://www.microsoft.com/.well-known/security.txt returned HTTP 200 text/plain on 2026-09-17 with
+      Contact, Policy, Acknowledgments, Encryption, Canonical and Expires fields. Saved verbatim.
+    method: probed
+  - id: rfc9457
+    name: Problem Details for HTTP APIs
+    conforms: false
+    evidence: >-
+      No operation declares application/problem+json. The error schema is
+      network.json#/definitions/Error — Azure's own {"error":{code,message,target,details,innerError}}
+      envelope, which predates and does not match RFC 9457.
+    method: derived
+  - id: pagination
+    conforms: true
+    evidence: >-
+      12 of 24 operations carry x-ms-pageable with nextLinkName nextLink; responses are {value[], nextLink}.
+      Continuation-URL pagination, consistently applied.
+    method: derived
+  - id: idempotency
+    conforms: partial
+    evidence: >-
+      All 8 mutating operations are PUT or DELETE at a caller-addressed resource path and are therefore
+      declaratively idempotent, but Azure ships no replay token on this resource provider — no
+      Idempotency-Key, no Repeatability-Request-ID. See the idempotency block in
+      conventions/microsoft-azure-private-link-conventions.yml.
+    method: derived
+  - id: rfc8594
+    name: Sunset header
+    conforms: false
+    evidence: No Sunset or Deprecation response header is declared or emitted. Retirements are announced out of band on the Azure Updates feed.
+    method: derived
+  - id: openapi
+    conforms: partial
+    evidence: >-
+      Microsoft publishes Swagger 2.0, not OpenAPI 3.x, for the Microsoft.Network resource provider. The
+      documents are valid Swagger 2.0 with vendor extensions (x-ms-pageable, x-ms-long-running-operation,
+      x-ms-azure-resource, x-ms-examples) that are not part of any OpenAPI version.
+    method: derived
+  - id: json-schema
+    conforms: partial
+    evidence: Definitions are Swagger 2.0 schema objects — the JSON Schema draft-4 subset, not a current JSON Schema dialect.
+    method: derived
+  - id: hypermedia
+    conforms: false
+    evidence: Responses carry resource ids but no link relations; nextLink on list responses is the only navigable URL.
+    method: derived
+  - id: etag-concurrency
+    conforms: true
+    evidence: >-
+      PrivateEndpoint and PrivateLinkService both expose a read-only etag property in the harvested
+      definitions, supporting optimistic concurrency via If-Match.
+    method: derived
+domain_standards:
+  applicable: false
+  note: >-
+    REWARD-ONLY CHECK, DELIBERATELY LEFT EMPTY. Azure Private Link is cloud network infrastructure. Its
+    market has no interoperability data standard of the kind domain_standard_conformance rewards — there
+    is no SCIM, OData, OpenRTB, FHIR, ISO 20022, LTI or OAI-PMH equivalent for private connectivity, and
+    inventing one here to fill the slot would be fabrication. The genuine cross-vendor comparison in this
+    space (AWS PrivateLink, Google Private Service Connect) is between three proprietary, mutually
+    incompatible control planes. Checked against the networking sector entry in scoring.yml; nothing to
+    probe.
+  probed_candidates:
+    - standard: OData
+      result: not present — ARM is REST/JSON with no $metadata surface, no $filter or $select on this resource provider
+    - standard: SCIM
+      result: not applicable — no identity provisioning surface
+compliance:
+  published: true
+  program_url: https://learn.microsoft.com/en-us/azure/compliance/
+  trust_center: https://www.microsoft.com/en-us/trust-center
+  service_trust_portal: https://servicetrust.microsoft.com/
+  note: >-
+    Azure Private Link is in scope for Microsoft's Azure-wide compliance programs rather than carrying its
+    own attestations. Microsoft publishes the audit reports and scope statements through the Service Trust
+    Portal, which requires sign-in to download the reports themselves; the offerings index at the
+    compliance URL above is public. Certification names are not enumerated here because the public index
+    is rendered client-side — see the Service Trust Portal for the authoritative per-service scope.
+  evidence:
+    - url: https://learn.microsoft.com/en-us/azure/compliance/
+      status: 200
+    - url: https://www.microsoft.com/en-us/trust-center
+      status: 200
+    - url: https://servicetrust.microsoft.com/
+      status: 200

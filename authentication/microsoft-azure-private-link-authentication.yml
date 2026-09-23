@@ -1,6 +1,6 @@
-generated: '2026-07-11'
+generated: '2026-09-17'
 method: derived
-source: openapi/microsoft-azure-private-link-openapi.yml
+source: openapi/microsoft-azure-private-link-operations-api-openapi.yml, openapi/microsoft-azure-private-link-private-endpoints-api-openapi.yml
 summary:
   types:
   - oauth2
@@ -15,4 +15,5 @@ schemes:
     scopes: 1
   description: Azure Active Directory OAuth2 Flow.
   sources:
-  - openapi/microsoft-azure-private-link-openapi.yml
+  - openapi/microsoft-azure-private-link-operations-api-openapi.yml
+  - openapi/microsoft-azure-private-link-private-endpoints-api-openapi.yml

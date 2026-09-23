@@ -1,9 +1,15 @@
-generated: '2026-07-11'
+generated: '2026-09-17'
 method: derived
-source: openapi/microsoft-azure-private-link-openapi.yml
+source: openapi/microsoft-azure-private-link-operations-api-openapi.yml, openapi/microsoft-azure-private-link-private-endpoints-api-openapi.yml
 schemes:
 - name: azure_auth
-  source: openapi/microsoft-azure-private-link-openapi.yml
+  source: openapi/microsoft-azure-private-link-operations-api-openapi.yml
+  flows:
+  - flow: implicit
+    authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+  description: Azure Active Directory OAuth2 Flow.
+- name: azure_auth
+  source: openapi/microsoft-azure-private-link-private-endpoints-api-openapi.yml
   flows:
   - flow: implicit
     authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
@@ -14,4 +20,5 @@ scopes:
   flows:
   - implicit
   sources:
-  - openapi/microsoft-azure-private-link-openapi.yml
+  - openapi/microsoft-azure-private-link-operations-api-openapi.yml
+  - openapi/microsoft-azure-private-link-private-endpoints-api-openapi.yml

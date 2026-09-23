@@ -1,0 +1,89 @@
+generated: '2026-09-17'
+method: searched
+source: >-
+  https://api.github.com/repos/Azure/azure-rest-api-specs/contents/specification/network/resource-manager/Microsoft.Network/Network/stable
+  (enumerated 2026-09-17), https://azure.microsoft.com/en-us/updates/?category=networking
+description: >-
+  Azure Private Link has no per-product changelog page. Its change record is the api-version series in
+  Microsoft's own specification repository — each dated directory is a published, callable version of the
+  contract — plus the Azure Updates feed for feature announcements. Both are first-party and dated; the
+  api-version list is the more precise of the two because it is the artifact the API actually serves.
+scheme: date-based api-version
+current_version: '2026-01-01'
+version_count: 61
+changelog_urls:
+  - url: https://azure.microsoft.com/en-us/updates/?category=networking
+    kind: feature announcements
+    status: 200
+  - url: https://github.com/Azure/azure-rest-api-specs/commits/main/specification/network/resource-manager/Microsoft.Network
+    kind: contract commit history
+  - url: https://learn.microsoft.com/en-us/azure/private-link/availability
+    kind: per-service Private Link availability matrix
+    status: 200
+entries:
+  - version: '2026-01-01'
+    date: '2026-01-01'
+    kind: api-version
+    breaking: false
+    highlights:
+      - Current stable api-version for Microsoft.Network.
+      - Private Link paths continue to ship inside virtualNetwork.json rather than as standalone documents.
+  - version: '2025-09-01'
+    date: '2025-09-01'
+    kind: api-version
+    breaking: false
+  - version: '2025-07-01'
+    date: '2025-07-01'
+    kind: api-version
+    breaking: false
+  - version: '2025-05-01'
+    date: '2025-05-01'
+    kind: api-version
+    breaking: false
+    packaging_change: true
+    highlights:
+      - >-
+        PACKAGING CHANGE, NOT A CONTRACT CHANGE. privateEndpoint.json and privateLinkService.json stop
+        being published as separate documents from this version; the same 16 Private Link paths move into
+        virtualNetwork.json. Callers are unaffected. Tooling that harvests Azure specs by filename is.
+  - version: '2025-03-01'
+    date: '2025-03-01'
+    kind: api-version
+    breaking: false
+    highlights:
+      - >-
+        Last stable version publishing Private Link as its own pair of documents. This is the version
+        harvested verbatim into openapi/_original/ — 24 operations across privateEndpoint.json (11) and
+        privateLinkService.json (13).
+  - version: '2025-01-01'
+    date: '2025-01-01'
+    kind: api-version
+    breaking: false
+  - version: '2024-10-01'
+    date: '2024-10-01'
+    kind: api-version
+    breaking: false
+  - version: '2024-07-01'
+    date: '2024-07-01'
+    kind: api-version
+    breaking: false
+  - version: '2024-05-01'
+    date: '2024-05-01'
+    kind: api-version
+    breaking: false
+  - version: '2024-03-01'
+    date: '2024-03-01'
+    kind: api-version
+    breaking: false
+  - version: '2024-01-01'
+    date: '2024-01-01'
+    kind: api-version
+    breaking: false
+    highlights:
+      - The api-version the API Evangelist hand-authored spec in openapi/ was written against.
+window: recent stable api-versions only; the full series runs back to 2015-06-15
+breaking_change_note: >-
+  None of these are breaking for a pinned client. Azure api-versions are additive and the older versions
+  stay callable — a client pinned to 2015-06-15 still resolves. "Breaking" in the Azure sense means
+  behaviour differs between two versions you might move between, which Microsoft documents per-service
+  rather than in a single changelog.

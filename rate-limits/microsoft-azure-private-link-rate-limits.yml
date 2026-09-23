@@ -3,85 +3,131 @@ specificationVersion: '0.1'
 schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
 provider: microsoft-azure-private-link
 providerId: microsoft-azure-private-link
+generated: '2026-09-17'
+method: searched
+source: https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/request-limits-and-throttling
+docs: https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/request-limits-and-throttling
 created: '2026-05-04'
-# Provenance stamped 2026-08-11: this artifact was written by the API Evangelist
-# bulk sweep dated 2026-05-04, not harvested from the provider. See roadmap#35.
-method: generated
-modified: '2026-05-04'
+modified: '2026-09-17'
 tags:
   - Rate Limiting
-  - Quotas
   - Throttling
-description: Machine-readable rate limit definitions for the microsoft-azure-private-link API surface.
-  Captures per-tier quotas, burst behavior, response signaling, and recovery semantics. Defaults are scaffold
-  values to be replaced with published provider limits.
+  - Azure Resource Manager
+description: >-
+  Private Link operations are Azure Resource Manager control-plane calls against management.azure.com, so
+  they inherit ARM throttling, not a product-specific quota. Two layers apply at once: the ARM gateway
+  token bucket (per subscription, per service principal, per operation type, applied per region) and the
+  Microsoft.Network resource provider's own per-subscription-per-region ceiling. Whichever empties first
+  throttles the call. This file replaces a 2026-05-04 scaffold that carried invented free/pro/enterprise
+  request quotas; none of those numbers came from Microsoft.
+limit_count: 6
 headers:
-  limit: X-RateLimit-Limit
-  remaining: X-RateLimit-Remaining
-  reset: X-RateLimit-Reset
+  remaining:
+    - x-ms-ratelimit-remaining-subscription-reads
+    - x-ms-ratelimit-remaining-subscription-writes
+    - x-ms-ratelimit-remaining-subscription-deletes
+    - x-ms-ratelimit-remaining-subscription-resource-requests
+    - x-ms-ratelimit-remaining-subscription-resource-entities-read
+    - x-ms-ratelimit-remaining-tenant-reads
+    - x-ms-ratelimit-remaining-tenant-writes
+    - x-ms-ratelimit-remaining-tenant-resource-requests
+    - x-ms-ratelimit-remaining-tenant-resource-entities-read
   retryAfter: Retry-After
-  policy: RateLimit-Policy
+  limit: null
+  reset: null
+  policy: null
+header_note: >-
+  Azure does not emit RateLimit-Limit / RateLimit-Reset or the RFC 9238 RateLimit-Policy header. The
+  runtime signal an agent gets is the x-ms-ratelimit-remaining-* counter on every 2xx response, and
+  Retry-After in seconds on a 429. Counters are per operation type; a response carries the counter for the
+  bucket the call drew from.
 responseCodes:
   throttled: 429
-  quotaExceeded: 429
-  serviceUnavailable: 503
+  retryAfterUnit: seconds
+observed:
+  - url: https://management.azure.com/subscriptions?api-version=2022-12-01
+    probed: '2026-09-17'
+    status: 401
+    note: >-
+      Anonymous probe. ARM refuses unauthenticated calls before any rate-limit counter is emitted
+      (WWW-Authenticate: Bearer, error invalid_token), so the x-ms-ratelimit-* headers could not be
+      observed live — they are documented, not probed. strict-transport-security was present.
 limits:
-  - tier: free
-    name: Free Tier Default
-    scope: api-key
-    metric: requests_per_minute
-    limit: 10
-    burst: 20
-    timeFrame: minute
+  - name: ARM subscription reads
+    scope: per-subscription-per-service-principal-per-region
+    metric: requests
+    algorithm: token-bucket
+    bucket_size: 250
+    refill_rate_per_second: 25
+    operations: read
     applies:
       - Azure Private Link REST API
-  - tier: free
-    name: Free Tier Monthly Quota
-    scope: api-key
-    metric: requests_per_month
+  - name: ARM subscription writes
+    scope: per-subscription-per-service-principal-per-region
+    metric: requests
+    algorithm: token-bucket
+    bucket_size: 200
+    refill_rate_per_second: 10
+    operations: write
+    applies:
+      - Azure Private Link REST API
+  - name: ARM subscription deletes
+    scope: per-subscription-per-service-principal-per-region
+    metric: requests
+    algorithm: token-bucket
+    bucket_size: 200
+    refill_rate_per_second: 10
+    operations: delete
+    applies:
+      - Azure Private Link REST API
+  - name: ARM tenant reads / writes / deletes
+    scope: per-tenant-per-region
+    metric: requests
+    algorithm: token-bucket
+    bucket_size: 250
+    refill_rate_per_second: 25
+    operations: read
+    note: >-
+      Tenant deletes and writes use bucket 200 / refill 10, matching the subscription shape. A global
+      per-subscription ceiling equal to 15x the individual service-principal limit applies across all
+      service principals.
+    applies:
+      - Azure Private Link REST API
+  - name: Microsoft.Network resource provider read (GET)
+    scope: per-subscription-per-region
+    metric: requests
+    limit: 10000
+    timeFrame: 5 minutes
+    operations: read
+    note: >-
+      The resource-provider ceiling that Private Link GET/LIST calls draw from. Applies on top of the ARM
+      gateway bucket above.
+    applies:
+      - Azure Private Link REST API
+  - name: Microsoft.Network resource provider write / delete (PUT, DELETE)
+    scope: per-subscription-per-region
+    metric: requests
     limit: 1000
-    timeFrame: month
-    applies:
-      - Azure Private Link REST API
-  - tier: professional
-    name: Professional Tier Default
-    scope: api-key
-    metric: requests_per_minute
-    limit: 100
-    burst: 200
-    timeFrame: minute
-    applies:
-      - Azure Private Link REST API
-  - tier: professional
-    name: Professional Tier Monthly Quota
-    scope: api-key
-    metric: requests_per_month
-    limit: 100000
-    timeFrame: month
-    applies:
-      - Azure Private Link REST API
-  - tier: enterprise
-    name: Enterprise Negotiated Limit
-    scope: contract
-    metric: requests_per_minute
-    limit: 1000
-    burst: 5000
-    timeFrame: minute
+    timeFrame: 5 minutes
+    operations: write
+    note: PrivateEndpoints_CreateOrUpdate, PrivateLinkServices_CreateOrUpdate and every Delete draw from this bucket.
     applies:
       - Azure Private Link REST API
 policies:
-  - name: Backoff Strategy
-    description: Clients should implement exponential backoff with jitter, honoring the Retry-After header
-      when present.
-  - name: Burst Handling
-    description: Short bursts above the steady-state limit are tolerated up to the documented burst ceiling
-      before throttling engages.
-  - name: Quota Reset
-    description: Monthly quotas reset at the start of each calendar month in UTC. Per-minute and per-second
-      windows reset on a sliding-window basis.
-  - name: Fair Use
-    description: Even on uncapped enterprise tiers, sustained usage that materially impacts shared infrastructure
-      may be subject to fair-use throttling.
+  - name: Retry-After is authoritative
+    description: >-
+      On a 429 the response carries Retry-After in seconds. Sending before it elapses is not processed and
+      returns a fresh, longer retry value. Azure SDKs implement this automatically.
+  - name: Free and trial subscriptions are lower
+    description: Microsoft states the documented buckets may be smaller for free or trial customers, without publishing the reduced numbers.
+  - name: Background job throttling
+    description: >-
+      ARM separately throttles platform background jobs; the symptom is "The request for subscription
+      could not be processed due to an excessive volume of traffic". A caller has no control over it.
+  - name: 429 is not always a quota
+    description: >-
+      Microsoft warns that some resource providers return 429 for transient overload or target-resource
+      state, not for a quota the caller consumed.
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com

@@ -1,0 +1,206 @@
+generated: '2026-09-17'
+method: derived
+source: >-
+  openapi/_original/*.json (Azure/azure-rest-api-specs, api-version 2025-03-01), plus
+  https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/request-limits-and-throttling,
+  https://learn.microsoft.com/en-us/rest/api/azure/ and live probes of https://management.azure.com
+description: >-
+  Cross-cutting runtime semantics for the Azure Private Link control plane. Everything here is Azure
+  Resource Manager platform behaviour — Private Link inherits it rather than defining its own — which is
+  itself the useful fact for an integrator: learn ARM once and every Private Link operation follows.
+authentication:
+  style: oauth2-bearer
+  scheme: azure_auth
+  flow: implicit (declared in the contract); authorization_code and client_credentials in practice
+  authorization_url: https://login.microsoftonline.com/common/oauth2/authorize
+  discovery: https://login.microsoftonline.com/common/v2.0/.well-known/openid-configuration
+  resource_scope: https://management.azure.com/.default
+  scopes:
+    - user_impersonation
+  api_keys: false
+  note: >-
+    There is no API key and no anonymous surface. Authorization is layered — a valid Entra ID token gets
+    you a 401-free request, and Azure RBAC then decides per-resource. See
+    authentication/ and scopes/.
+versioning:
+  style: query-parameter
+  parameter: api-version
+  format: YYYY-MM-DD, optionally with -preview
+  required: true
+  current_stable: '2026-01-01'
+  harvested: '2025-03-01'
+  note: >-
+    Every request must name a version; omitting it is a 400 MissingApiVersionParameter at the gateway.
+    Versions are additive and long-lived — a client pinned to a 2019 api-version still works.
+pagination:
+  style: continuation-token-url
+  response_fields:
+    value: array of resources
+    nextLink: absolute URL of the next page, absent on the last page
+  request_params: []
+  page_size_control: false
+  declared_in_contract: true
+  contract_marker: x-ms-pageable
+  pageable_operations: 12
+  note: >-
+    There is no page or limit parameter. You follow nextLink verbatim, including its opaque skiptoken.
+    12 of the 24 operations are marked x-ms-pageable.
+field_expansion:
+  supported: false
+  note: ARM returns whole resources. There is no $select, $expand or sparse-fieldset mechanism on this surface.
+metadata:
+  supported: true
+  mechanism: resource `tags` object (free-form string key/value) on PrivateEndpoint and PrivateLinkService
+  note: Azure resource tags double as the cost-allocation dimension; see finops/.
+request_tracing:
+  request_id_headers:
+    - x-ms-request-id
+    - x-ms-correlation-request-id
+    - x-ms-routing-request-id
+  client_supplied: x-ms-client-request-id
+  echo: x-ms-return-client-request-id
+  observed: >-
+    Probed 2026-09-17 — an anonymous 401 from management.azure.com already carried x-ms-request-id,
+    x-ms-correlation-request-id and x-ms-routing-request-id (the last encoding region and timestamp:
+    EASTUS:20260917T224947Z:<guid>). Tracing identifiers are emitted before authentication, which makes
+    them usable for support on failed calls too.
+error_envelope:
+  format: azure-arm-error
+  shape: '{"error": {"code", "message", "target", "details", "innerError"}}'
+  rfc9457: false
+  see: errors/microsoft-azure-private-link-problem-types.yml
+rate_limit_signaling:
+  headers:
+    - x-ms-ratelimit-remaining-subscription-reads
+    - x-ms-ratelimit-remaining-subscription-writes
+    - x-ms-ratelimit-remaining-subscription-deletes
+    - x-ms-ratelimit-remaining-tenant-reads
+    - x-ms-ratelimit-remaining-tenant-writes
+  exhaustion_status: 429
+  retry_signal: Retry-After (seconds)
+  see: rate-limits/microsoft-azure-private-link-rate-limits.yml
+async_operations:
+  long_running: true
+  marker: x-ms-long-running-operation
+  count: 9
+  accepted_statuses:
+    - 201
+    - 202
+  polling_headers:
+    - Azure-AsyncOperation
+    - Location
+  terminal_states:
+    - Succeeded
+    - Failed
+    - Canceled
+  note: >-
+    Nine of 24 operations are long-running. The caller polls the URL in Azure-AsyncOperation (preferred)
+    or Location until provisioningState reaches a terminal state. This is the single most important
+    convention on this API for an agent: creating a private endpoint returns 201 immediately and the
+    endpoint is not usable, or even guaranteed to exist, until polling says Succeeded.
+idempotency:
+  coverage: partial
+  mechanism: http-native
+  replay_token: false
+  header: null
+  retention: null
+  scope:
+    - PrivateEndpoints_CreateOrUpdate
+    - PrivateEndpoints_Delete
+    - PrivateDnsZoneGroups_CreateOrUpdate
+    - PrivateDnsZoneGroups_Delete
+    - PrivateLinkServices_CreateOrUpdate
+    - PrivateLinkServices_Delete
+    - PrivateLinkServices_UpdatePrivateEndpointConnection
+    - PrivateLinkServices_DeletePrivateEndpointConnection
+  description: >-
+    Every mutating operation on this surface is a PUT or DELETE addressed at a caller-chosen resource
+    path, so replaying one converges on the same state rather than creating a duplicate — that is real,
+    documented, declarative idempotency and it covers all 8 write operations. It is recorded as PARTIAL,
+    not FULL, because Azure ships no replay-protection token: there is no Idempotency-Key header, no
+    Repeatability-Request-ID on this resource provider, and no server-side dedupe window. Two consequences
+    an agent must handle. First, a PUT is last-writer-wins on the WHOLE resource — replaying a stale body
+    after someone else edited the endpoint silently reverts their change, unless you send the If-Match
+    ETag. Second, a retried PUT against a long-running create that is still in flight is accepted again
+    and returns a new operation to poll, so "retry the create" and "retry safely" are not the same thing.
+  concurrency_control: ETag / If-Match on the resource (optimistic concurrency); recommended for any read-modify-write
+  non_mutating:
+    - PrivateLinkServices_CheckPrivateLinkServiceVisibility
+    - PrivateLinkServices_CheckPrivateLinkServiceVisibilityByResourceGroup
+  non_mutating_note: >-
+    Both POSTs are visibility CHECKS. They are long-running but change no state, so replay is free.
+dry_run_mode:
+  supported: false
+  note: >-
+    There is no what-if or validate-only flag on the Private Link REST operations themselves. The nearest
+    thing sits one layer up in ARM deployments (Deployments - What If), which rehearses a template rather
+    than a REST call. Recorded as unsupported for this surface rather than credited to the platform.
+reversibility:
+  grade: documented
+  summary: >-
+    Partly reversible, and the split matters: the connection-approval state machine is fully reversible,
+    resource deletion is not. Microsoft publishes no restore, undelete, soft-delete or recycle-bin
+    mechanism for private endpoints, private link services or private DNS zone groups, and states no
+    window in which a delete can be taken back. Graded `documented` rather than `verified` because a
+    reversal path exists and is documented but NO time window is published for any of it — and no window
+    is invented here.
+  surfaces:
+    - write_operation: PrivateLinkServices_UpdatePrivateEndpointConnection
+      action: approve or reject a consumer's private endpoint connection
+      reversal_operation: PrivateLinkServices_UpdatePrivateEndpointConnection
+      reversible: true
+      mechanism: >-
+        privateLinkServiceConnectionState.status is a mutable field. Approved can be set back to Rejected
+        and, per Microsoft's documentation, a Rejected connection cannot be re-approved by the provider —
+        the consumer must delete and recreate the private endpoint. So the reversal is asymmetric.
+      window: null
+      window_note: No time limit is stated on changing approval state. Approved -> Rejected is available indefinitely; Rejected -> Approved is not available at all.
+      docs: https://learn.microsoft.com/en-us/azure/private-link/private-link-service-overview
+    - write_operation: PrivateEndpoints_CreateOrUpdate
+      action: create or replace a private endpoint
+      reversal_operation: PrivateEndpoints_CreateOrUpdate (re-PUT the prior body) / PrivateEndpoints_Delete
+      reversible: true
+      mechanism: >-
+        A replace is undone by PUTting the previous representation, provided the caller kept it — ARM
+        stores no prior version and offers no rollback operation. Capture the Get body before writing.
+      window: null
+    - write_operation: PrivateEndpoints_Delete
+      action: delete a private endpoint
+      reversal_operation: null
+      reversible: false
+      mechanism: >-
+        Irreversible. No soft delete, no restore API, no documented retention. The endpoint's private IP
+        is released back to the subnet and the DNS records in any attached private DNS zone group go with
+        it. Recreating is a new resource with a new connection that the service owner must approve again.
+      window: null
+    - write_operation: PrivateLinkServices_Delete
+      action: delete a private link service
+      reversal_operation: null
+      reversible: false
+      mechanism: >-
+        Irreversible, and it fans out — every consumer private endpoint connected to the service is
+        disconnected. The alias consumers were given is not reissued on recreation.
+      window: null
+    - write_operation: PrivateDnsZoneGroups_Delete
+      action: delete a private DNS zone group
+      reversal_operation: PrivateDnsZoneGroups_CreateOrUpdate
+      reversible: true
+      mechanism: >-
+        Recreating the zone group restores the A records, because the group is a declarative binding
+        rather than stored data. Name resolution breaks for consumers in the interval.
+      window: null
+    - write_operation: PrivateLinkServices_DeletePrivateEndpointConnection
+      action: provider drops a consumer's connection
+      reversal_operation: null
+      reversible: false
+      mechanism: The consumer must create a new private endpoint; the provider cannot restore the dropped connection.
+      window: null
+  agent_guidance: >-
+    Before any Delete on this API, read the resource with the matching Get and keep the body. That capture
+    is the only rollback that exists.
+cross_references:
+  errors: errors/microsoft-azure-private-link-problem-types.yml
+  lifecycle: lifecycle/microsoft-azure-private-link-lifecycle.yml
+  authentication: authentication/microsoft-azure-private-link-authentication.yml
+  scopes: scopes/microsoft-azure-private-link-scopes.yml
+  rate_limits: rate-limits/microsoft-azure-private-link-rate-limits.yml

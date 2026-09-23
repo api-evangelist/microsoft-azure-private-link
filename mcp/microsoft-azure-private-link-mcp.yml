@@ -1,0 +1,129 @@
+generated: '2026-09-17'
+method: derived
+source: >-
+  openapi/_original/*.json (candidate tools), plus searches of
+  https://learn.microsoft.com/en-us/azure/developer/azure-mcp-server/ and
+  https://github.com/microsoft/mcp (Azure.Mcp.Server)
+status: candidate
+description: >-
+  There is no MCP server for Azure Private Link. Microsoft ships a real, first-party Azure MCP Server, but
+  it exposes no Private Link tools, so nothing here is credited as a Private Link agent surface. The
+  tool list below is a CANDIDATE derived from the harvested contract — what a server would expose if one
+  existed. It is not installable and no endpoint is asserted.
+deployment:
+  mode: none
+  endpoint: null
+  install: null
+  package: null
+  auth: unknown
+  verified: searched
+  note: >-
+    mode is none because nobody ships a Private Link MCP server. See related_servers below for the
+    first-party Azure server that exists but does not cover this product.
+related_servers:
+  - name: Azure MCP Server
+    vendor: Microsoft
+    official: true
+    repository: https://github.com/microsoft/mcp (servers/Azure.Mcp.Server)
+    docs: https://learn.microsoft.com/en-us/azure/developer/azure-mcp-server/
+    package: https://www.npmjs.com/package/@azure/mcp
+    package_version: 3.0.0-beta.44
+    package_published: '2026-09-15'
+    mode: local-stdio
+    install: npx -y @azure/mcp@latest server start
+    alternate_install: dotnet dnx Azure.Mcp server start
+    auth: azure-cli-credential (inherits the signed-in az session)
+    hosted_endpoint: null
+    hosted_note: >-
+      Microsoft documents deploying the server as a remote HTTP endpoint on Azure Container Apps for
+      clients that require one (Copilot Studio, Microsoft Foundry). That is SELF-HOSTING — the customer
+      operates it. Microsoft publishes no vendor-hosted MCP URL, so this is local-stdio, not remote or both.
+    covers_private_link: false
+    covers_private_link_evidence: >-
+      The published tool reference (https://learn.microsoft.com/en-us/azure/developer/azure-mcp-server/tools/,
+      fetched 2026-09-17) enumerates tools for AI Search, App Configuration, Cosmos DB, Key Vault, Monitor,
+      RBAC, Redis, Storage, the Developer CLI and Azure best practices. It names no Private Link, private
+      endpoint, private link service or virtual network tool. Searched the page for "Private Link",
+      "private endpoint", "virtual network" and "Network" — the only hits are an unrelated elicitation
+      warning about certificate private keys and a retry-timeout setting.
+    why_not_pointed_at: >-
+      Deliberately NOT wired as a type: MCPServer pointer on this record. The server is real and
+      first-party, but crediting a Private Link product repo with an Azure-wide server that ships zero
+      Private Link tools would assert an agent surface this product does not have.
+candidate_tools:
+  note: >-
+    Derived one-for-one from the 24 operations in the harvested 2025-03-01 contract. inputSchema for each
+    would be the operation's path/query parameters and requestBody. Not implemented by anyone.
+  tools:
+    - name: list_private_endpoints
+      rest: [PrivateEndpoints_List, PrivateEndpoints_ListBySubscription]
+      consequence: read
+    - name: get_private_endpoint
+      rest: [PrivateEndpoints_Get]
+      consequence: read
+    - name: create_or_update_private_endpoint
+      rest: [PrivateEndpoints_CreateOrUpdate]
+      consequence: write
+      long_running: true
+    - name: delete_private_endpoint
+      rest: [PrivateEndpoints_Delete]
+      consequence: destructive
+      long_running: true
+      irreversible: true
+    - name: list_available_private_endpoint_types
+      rest: [AvailablePrivateEndpointTypes_List, AvailablePrivateEndpointTypes_ListByResourceGroup]
+      consequence: read
+    - name: list_private_dns_zone_groups
+      rest: [PrivateDnsZoneGroups_List]
+      consequence: read
+    - name: get_private_dns_zone_group
+      rest: [PrivateDnsZoneGroups_Get]
+      consequence: read
+    - name: create_or_update_private_dns_zone_group
+      rest: [PrivateDnsZoneGroups_CreateOrUpdate]
+      consequence: write
+      long_running: true
+    - name: delete_private_dns_zone_group
+      rest: [PrivateDnsZoneGroups_Delete]
+      consequence: destructive
+      long_running: true
+    - name: list_private_link_services
+      rest: [PrivateLinkServices_List, PrivateLinkServices_ListBySubscription]
+      consequence: read
+    - name: get_private_link_service
+      rest: [PrivateLinkServices_Get]
+      consequence: read
+    - name: create_or_update_private_link_service
+      rest: [PrivateLinkServices_CreateOrUpdate]
+      consequence: write
+      long_running: true
+    - name: delete_private_link_service
+      rest: [PrivateLinkServices_Delete]
+      consequence: destructive
+      long_running: true
+      irreversible: true
+    - name: list_private_endpoint_connections
+      rest: [PrivateLinkServices_ListPrivateEndpointConnections]
+      consequence: read
+    - name: get_private_endpoint_connection
+      rest: [PrivateLinkServices_GetPrivateEndpointConnection]
+      consequence: read
+    - name: approve_or_reject_private_endpoint_connection
+      rest: [PrivateLinkServices_UpdatePrivateEndpointConnection]
+      consequence: write
+      note: The one genuinely reversible write on this API — status moves between Pending, Approved and Rejected.
+    - name: delete_private_endpoint_connection
+      rest: [PrivateLinkServices_DeletePrivateEndpointConnection]
+      consequence: destructive
+      long_running: true
+      irreversible: true
+    - name: check_private_link_service_visibility
+      rest: [PrivateLinkServices_CheckPrivateLinkServiceVisibility, PrivateLinkServices_CheckPrivateLinkServiceVisibilityByResourceGroup]
+      consequence: read
+      note: A POST, but state-free — it answers whether a given alias is visible to the caller.
+    - name: list_auto_approved_private_link_services
+      rest: [PrivateLinkServices_ListAutoApprovedPrivateLinkServices, PrivateLinkServices_ListAutoApprovedPrivateLinkServicesByResourceGroup]
+      consequence: read
+  coverage:
+    rest_operations: 24
+    candidate_tools: 19

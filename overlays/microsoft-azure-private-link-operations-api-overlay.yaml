@@ -1,0 +1,57 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements — Azure Private Link Operations API
+  version: 1.0.0
+x-provenance:
+  generated: '2026-09-17'
+  method: generated
+  source: openapi/microsoft-azure-private-link-operations-api-openapi.yml
+  extends: openapi/microsoft-azure-private-link-operations-api-openapi.yml
+  note: >-
+    Captures API Evangelist's enrichment on top of the spec without mutating it. The target spec is
+    API-Evangelist-authored from documentation; Microsoft's own verbatim contracts live in
+    openapi/_original/.
+actions:
+  - target: $.info
+    description: Record the upstream contract and the version this surface belongs to
+    update:
+      x-provider: Microsoft
+      x-product: Azure Private Link
+      x-contract-source: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/Network/stable
+      x-current-api-version: '2026-01-01'
+      x-api-version-required: true
+      x-api-version-parameter: api-version
+  - target: $.info
+    description: Point at the real reference documentation (the previous /rest/api/privatelink/ URL 404s)
+    update:
+      x-documentation: https://learn.microsoft.com/en-us/rest/api/azure/
+      x-overview: https://learn.microsoft.com/en-us/azure/private-link/private-link-overview
+  - target: $
+    description: Attach the enrichment artifact set so a consumer can find the runtime semantics
+    update:
+      x-artifacts:
+        conventions: conventions/microsoft-azure-private-link-conventions.yml
+        errors: errors/microsoft-azure-private-link-problem-types.yml
+        rate-limits: rate-limits/microsoft-azure-private-link-rate-limits.yml
+        authentication: authentication/microsoft-azure-private-link-authentication.yml
+        scopes: scopes/microsoft-azure-private-link-scopes.yml
+        lifecycle: lifecycle/microsoft-azure-private-link-lifecycle.yml
+        packages: packages/microsoft-azure-private-link-packages.yml
+        plans: plans/microsoft-azure-private-link-plans-pricing.yml
+  - target: $.components.securitySchemes.azure_auth
+    description: Record the OIDC discovery document probed on the authorization host
+    update:
+      x-openid-configuration: https://login.microsoftonline.com/common/v2.0/.well-known/openid-configuration
+      x-resource-scope: https://management.azure.com/.default
+      x-probed: '2026-09-17'
+  - target: $.paths.*.get
+    description: Mark read operations with their agent consequence class
+    update:
+      x-agentic-consequence: read
+      x-idempotent: true
+  - target: $.paths.*.*.responses
+    description: Record the error envelope shape, which the contract does not type
+    update:
+      x-error-envelope: '{"error": {"code", "message", "target", "details", "innerError"}}'
+      x-error-format: azure-arm-error
+      x-rfc9457: false

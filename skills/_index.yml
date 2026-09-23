@@ -1,0 +1,38 @@
+generated: '2026-09-17'
+method: generated
+source: openapi/_original/*.json (api-version 2025-03-01)
+provider: microsoft-azure-private-link
+description: >-
+  Packaged Agent Skills for the Azure Private Link control plane, one per marquee flow. Every operationId
+  referenced was read out of Microsoft's own harvested contract; none are invented. Each skill carries the
+  conventions that are NOT in the contract and that an agent gets wrong without them — the asynchronous
+  polling, the untyped ARM error envelope, the DNS zone group step, and which writes can be taken back.
+skills:
+  - name: connect-to-paas-service
+    file: skills/microsoft-azure-private-link-connect-to-paas-service.md
+    side: consumer
+    summary: Create a private endpoint onto an Azure PaaS resource and attach the private DNS zone group that makes it resolve.
+    operations:
+      - AvailablePrivateEndpointTypes_List
+      - PrivateEndpoints_CreateOrUpdate
+      - PrivateEndpoints_Get
+      - PrivateDnsZoneGroups_CreateOrUpdate
+      - PrivateDnsZoneGroups_Get
+    destructive_operations:
+      - PrivateEndpoints_Delete
+  - name: approve-endpoint-connections
+    file: skills/microsoft-azure-private-link-approve-endpoint-connections.md
+    side: producer
+    summary: Publish a private link service, triage pending consumer connections, and approve or reject them.
+    operations:
+      - PrivateLinkServices_CreateOrUpdate
+      - PrivateLinkServices_Get
+      - PrivateLinkServices_ListPrivateEndpointConnections
+      - PrivateLinkServices_GetPrivateEndpointConnection
+      - PrivateLinkServices_UpdatePrivateEndpointConnection
+    destructive_operations:
+      - PrivateLinkServices_DeletePrivateEndpointConnection
+      - PrivateLinkServices_Delete
+coverage:
+  contract_operations: 24
+  operations_referenced: 16
