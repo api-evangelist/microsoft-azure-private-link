@@ -1,0 +1,130 @@
+openapi: 3.2.0
+info:
+  title: NetworkManagementClient Subscriptions API
+  description: The Microsoft Azure Network management API provides a RESTful set of web services that interact with Microsoft Azure Networks service to manage your network resources. The API has entities that capture the relationship between an end user and the Microsoft Azure Networks service.
+  version: '2025-03-01'
+servers:
+- url: https://management.azure.com
+security:
+- azure_auth:
+  - user_impersonation
+tags:
+- name: Subscriptions
+paths:
+  /subscriptions/{subscriptionId}/providers/Microsoft.Network/locations/{location}/availablePrivateEndpointTypes:
+    get:
+      operationId: AvailablePrivateEndpointTypes_List
+      description: Returns all of the resource types that can be linked to a Private Endpoint in this subscription in this region.
+      parameters:
+      - name: location
+        in: path
+        required: true
+        description: The location of the domain name.
+        schema:
+          type: string
+      - $ref: ./network.json#/parameters/ApiVersionParameter
+      - $ref: ./network.json#/parameters/SubscriptionIdParameter
+      responses:
+        '200':
+          description: Request successful. Returns all of the resource types that can be linked to a Private Endpoint in this subscription in this region.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AvailablePrivateEndpointTypesResult'
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: ./network.json#/definitions/CloudError
+      x-ms-examples:
+        Get available PrivateEndpoint types:
+          $ref: ./examples/AvailablePrivateEndpointTypesGet.json
+      x-ms-pageable:
+        nextLinkName: nextLink
+      tags:
+      - Subscriptions
+      summary: Available private endpoint types list
+      x-summary-source: derived
+  ? /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/locations/{location}/availablePrivateEndpointTypes
+  : get:
+      operationId: AvailablePrivateEndpointTypes_ListByResourceGroup
+      description: Returns all of the resource types that can be linked to a Private Endpoint in this subscription in this region.
+      parameters:
+      - name: location
+        in: path
+        required: true
+        description: The location of the domain name.
+        schema:
+          type: string
+      - name: resourceGroupName
+        in: path
+        required: true
+        description: The name of the resource group.
+        schema:
+          type: string
+      - $ref: ./network.json#/parameters/SubscriptionIdParameter
+      - $ref: ./network.json#/parameters/ApiVersionParameter
+      responses:
+        '200':
+          description: Request successful. Returns all of the resource types that can be linked to a Private Endpoint in this subscription in this region.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AvailablePrivateEndpointTypesResult'
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: ./network.json#/definitions/CloudError
+      x-ms-examples:
+        Get available PrivateEndpoint types in the resource group:
+          $ref: ./examples/AvailablePrivateEndpointTypesResourceGroupGet.json
+      x-ms-pageable:
+        nextLinkName: nextLink
+      tags:
+      - Subscriptions
+      summary: Available private endpoint types list by resource group
+      x-summary-source: derived
+components:
+  schemas:
+    AvailablePrivateEndpointTypesResult:
+      properties:
+        value:
+          type: array
+          items:
+            $ref: '#/components/schemas/AvailablePrivateEndpointType'
+          description: An array of available privateEndpoint type.
+        nextLink:
+          readOnly: true
+          type: string
+          description: The URL to get the next set of results.
+      description: An array of available PrivateEndpoint types.
+    AvailablePrivateEndpointType:
+      properties:
+        name:
+          type: string
+          description: The name of the service and resource.
+        id:
+          type: string
+          description: A unique identifier of the AvailablePrivateEndpoint Type resource.
+        type:
+          type: string
+          description: Resource type.
+        resourceName:
+          type: string
+          description: The name of the service and resource.
+        displayName:
+          type: string
+          description: Display name of the resource.
+      description: The information of an AvailablePrivateEndpointType.
+  securitySchemes:
+    azure_auth:
+      type: oauth2
+      flows:
+        implicit:
+          scopes:
+            user_impersonation: impersonate your user account
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+      description: Azure Active Directory OAuth2 Flow.

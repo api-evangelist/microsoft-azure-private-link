@@ -168,52 +168,156 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+  ? /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateEndpoints/{privateEndpointName}
+  : delete:
+      tags:
+      - Private Endpoints
+      operationId: PrivateEndpoints_Delete
+      description: Deletes the specified private endpoint.
+      parameters:
+      - name: resourceGroupName
+        in: path
+        required: true
+        description: The name of the resource group.
+        schema:
+          type: string
+      - name: privateEndpointName
+        in: path
+        required: true
+        description: The name of the private endpoint.
+        schema:
+          type: string
+      - $ref: ./network.json#/parameters/ApiVersionParameter
+      - $ref: ./network.json#/parameters/SubscriptionIdParameter
+      responses:
+        '202':
+          description: Accepted and the operation will complete asynchronously.
+        '204':
+          description: Delete successful.
+        '200':
+          description: Delete successful.
+        default:
+          description: Error.
+          content:
+            application/json:
+              schema:
+                $ref: ./network.json#/definitions/Error
+      x-ms-long-running-operation: true
+      x-ms-long-running-operation-options:
+        final-state-via: location
+      x-ms-examples:
+        Delete private endpoint:
+          $ref: ./examples/PrivateEndpointDelete.json
+      summary: Private endpoints delete
+      x-summary-source: derived
+    get:
+      tags:
+      - Private Endpoints
+      operationId: PrivateEndpoints_Get
+      description: Gets the specified private endpoint by resource group.
+      parameters:
+      - name: resourceGroupName
+        in: path
+        required: true
+        description: The name of the resource group.
+        schema:
+          type: string
+      - name: privateEndpointName
+        in: path
+        required: true
+        description: The name of the private endpoint.
+        schema:
+          type: string
+      - $ref: ./network.json#/parameters/ApiVersionParameter
+      - $ref: ./network.json#/parameters/SubscriptionIdParameter
+      - name: $expand
+        in: query
+        required: false
+        description: Expands referenced resources.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Request successful. The operation returns the resulting private endpoint resource.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PrivateEndpoint'
+        default:
+          description: Error.
+          content:
+            application/json:
+              schema:
+                $ref: ./network.json#/definitions/Error
+      x-ms-examples:
+        Get private endpoint:
+          $ref: ./examples/PrivateEndpointGet.json
+        Get private endpoint with manual approval connection:
+          $ref: ./examples/PrivateEndpointGetForManualApproval.json
+        Get private endpoint with application security groups:
+          $ref: ./examples/PrivateEndpointGetWithASG.json
+      summary: Private endpoints get
+      x-summary-source: derived
+    put:
+      tags:
+      - Private Endpoints
+      operationId: PrivateEndpoints_CreateOrUpdate
+      description: Creates or updates an private endpoint in the specified resource group.
+      parameters:
+      - name: resourceGroupName
+        in: path
+        required: true
+        description: The name of the resource group.
+        schema:
+          type: string
+      - name: privateEndpointName
+        in: path
+        required: true
+        description: The name of the private endpoint.
+        schema:
+          type: string
+      - $ref: ./network.json#/parameters/ApiVersionParameter
+      - $ref: ./network.json#/parameters/SubscriptionIdParameter
+      responses:
+        '200':
+          description: Update successful. The operation returns the resulting private endpoint resource.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PrivateEndpoint'
+        '201':
+          description: Create successful. The operation returns the resulting private endpoint resource.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PrivateEndpoint'
+        default:
+          description: Error.
+          content:
+            application/json:
+              schema:
+                $ref: ./network.json#/definitions/Error
+      x-ms-long-running-operation: true
+      x-ms-long-running-operation-options:
+        final-state-via: azure-async-operation
+      x-ms-examples:
+        Create private endpoint:
+          $ref: ./examples/PrivateEndpointCreate.json
+        Create private endpoint with manual approval connection:
+          $ref: ./examples/PrivateEndpointCreateForManualApproval.json
+        Create private endpoint with application security groups:
+          $ref: ./examples/PrivateEndpointCreateWithASG.json
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PrivateEndpoint'
+        description: Parameters supplied to the create or update private endpoint operation.
+        required: true
+      summary: Private endpoints create or update
+      x-summary-source: derived
 components:
-  parameters:
-    subscriptionId:
-      name: subscriptionId
-      in: path
-      required: true
-      description: The ID of the target subscription.
-      schema:
-        type: string
-    apiVersion:
-      name: api-version
-      in: query
-      required: true
-      description: The API version to use for this operation.
-      schema:
-        type: string
-    resourceGroupName:
-      name: resourceGroupName
-      in: path
-      required: true
-      description: The name of the resource group.
-      schema:
-        type: string
   schemas:
-    Resource:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Resource ID.
-        name:
-          type: string
-          description: Resource name.
-        type:
-          type: string
-          description: Resource type.
-        location:
-          type: string
-          description: Resource location.
-        tags:
-          type: object
-          additionalProperties:
-            type: string
-        properties:
-          type: object
-          description: Resource-specific properties.
     ErrorResponse:
       type: object
       properties:
@@ -236,6 +340,227 @@ components:
         nextLink:
           type: string
           description: URL to the next page of results.
+    Resource:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Resource ID.
+        name:
+          type: string
+          description: Resource name.
+        type:
+          type: string
+          description: Resource type.
+        location:
+          type: string
+          description: Resource location.
+        tags:
+          type: object
+          additionalProperties:
+            type: string
+        properties:
+          type: object
+          description: Resource-specific properties.
+    PrivateEndpointProperties:
+      properties:
+        subnet:
+          $ref: ./virtualNetwork.json#/definitions/Subnet
+          description: The ID of the subnet from which the private IP will be allocated.
+        networkInterfaces:
+          type: array
+          readOnly: true
+          items:
+            $ref: ./networkInterface.json#/definitions/NetworkInterface
+          description: An array of references to the network interfaces created for this private endpoint.
+        provisioningState:
+          readOnly: true
+          $ref: ./network.json#/definitions/ProvisioningState
+          description: The provisioning state of the private endpoint resource.
+        ipVersionType:
+          type: string
+          description: Specifies the IP version type for the private IPs of the private endpoint. If not defined, this defaults to IPv4.
+          enum:
+          - IPv4
+          - IPv6
+          - DualStack
+          default: IPv4
+          x-ms-enum:
+            name: PrivateEndpointIPVersionType
+            modelAsString: true
+            values:
+            - name: IPv4
+              value: IPv4
+              description: Indicates that the Private IPs of the private endpoint will be IPv4 only.
+            - name: IPv6
+              value: IPv6
+              description: Indicates that the Private IPs of the private endpoint will be IPv6 only.
+            - name: DualStack
+              value: DualStack
+              description: Indicates that the Private IPs of the private endpoint can be both IPv4 and IPv6.
+        privateLinkServiceConnections:
+          type: array
+          items:
+            $ref: '#/components/schemas/PrivateLinkServiceConnection'
+          description: A grouping of information about the connection to the remote resource.
+        manualPrivateLinkServiceConnections:
+          type: array
+          items:
+            $ref: '#/components/schemas/PrivateLinkServiceConnection'
+          description: A grouping of information about the connection to the remote resource. Used when the network admin does not have access to approve connections to the remote resource.
+        customDnsConfigs:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomDnsConfigPropertiesFormat'
+          description: An array of custom dns configurations.
+        applicationSecurityGroups:
+          type: array
+          items:
+            $ref: ./applicationSecurityGroup.json#/definitions/ApplicationSecurityGroup
+          description: Application security groups in which the private endpoint IP configuration is included.
+        ipConfigurations:
+          type: array
+          items:
+            $ref: '#/components/schemas/PrivateEndpointIPConfiguration'
+          description: A list of IP configurations of the private endpoint. This will be used to map to the First Party Service's endpoints.
+        customNetworkInterfaceName:
+          type: string
+          description: The custom name of the network interface attached to the private endpoint.
+      description: Properties of the private endpoint.
+    PrivateLinkServiceConnection:
+      properties:
+        properties:
+          x-ms-client-flatten: true
+          $ref: '#/components/schemas/PrivateLinkServiceConnectionProperties'
+          description: Properties of the private link service connection.
+        name:
+          type: string
+          description: The name of the resource that is unique within a resource group. This name can be used to access the resource.
+        type:
+          readOnly: true
+          type: string
+          description: The resource type.
+        etag:
+          readOnly: true
+          type: string
+          description: A unique read-only string that changes whenever the resource is updated.
+      allOf:
+      - $ref: ./network.json#/definitions/SubResource
+      description: PrivateLinkServiceConnection resource.
+    PrivateEndpoint:
+      properties:
+        extendedLocation:
+          $ref: ./network.json#/definitions/ExtendedLocation
+          description: The extended location of the load balancer.
+        properties:
+          x-ms-client-flatten: true
+          $ref: '#/components/schemas/PrivateEndpointProperties'
+          description: Properties of the private endpoint.
+        etag:
+          readOnly: true
+          type: string
+          description: A unique read-only string that changes whenever the resource is updated.
+      allOf:
+      - $ref: ./network.json#/definitions/Resource
+      description: Private endpoint resource.
+    PrivateEndpointListResult:
+      properties:
+        value:
+          type: array
+          items:
+            $ref: '#/components/schemas/PrivateEndpoint'
+          description: A list of private endpoint resources in a resource group.
+        nextLink:
+          type: string
+          description: The URL to get the next set of results.
+          readOnly: true
+      description: Response for the ListPrivateEndpoints API service call.
+    PrivateEndpointIPConfiguration:
+      type: object
+      properties:
+        properties:
+          x-ms-client-flatten: true
+          $ref: '#/components/schemas/PrivateEndpointIPConfigurationProperties'
+          description: Properties of private endpoint IP configurations.
+        name:
+          type: string
+          description: The name of the resource that is unique within a resource group.
+        type:
+          readOnly: true
+          type: string
+          description: The resource type.
+        etag:
+          readOnly: true
+          type: string
+          description: A unique read-only string that changes whenever the resource is updated.
+      description: An IP Configuration of the private endpoint.
+    PrivateLinkServiceConnectionProperties:
+      properties:
+        provisioningState:
+          readOnly: true
+          $ref: ./network.json#/definitions/ProvisioningState
+          description: The provisioning state of the private link service connection resource.
+        privateLinkServiceId:
+          type: string
+          description: The resource id of private link service.
+        groupIds:
+          type: array
+          items:
+            type: string
+          description: The ID(s) of the group(s) obtained from the remote resource that this private endpoint should connect to.
+        requestMessage:
+          type: string
+          description: A message passed to the owner of the remote resource with this connection request. Restricted to 140 chars.
+        privateLinkServiceConnectionState:
+          $ref: ./privateLinkService.json#/definitions/PrivateLinkServiceConnectionState
+          description: A collection of read-only information about the state of the connection to the remote resource.
+      description: Properties of the PrivateLinkServiceConnection.
+    CustomDnsConfigPropertiesFormat:
+      properties:
+        fqdn:
+          type: string
+          description: Fqdn that resolves to private endpoint ip address.
+        ipAddresses:
+          type: array
+          items:
+            type: string
+          description: A list of private ip addresses of the private endpoint.
+      description: Contains custom Dns resolution configuration from customer.
+    PrivateEndpointIPConfigurationProperties:
+      type: object
+      properties:
+        groupId:
+          type: string
+          description: The ID of a group obtained from the remote resource that this private endpoint should connect to.
+        memberName:
+          type: string
+          description: The member name of a group obtained from the remote resource that this private endpoint should connect to.
+        privateIPAddress:
+          type: string
+          description: A private ip address obtained from the private endpoint's subnet.
+      description: Properties of an IP Configuration of the private endpoint.
+  parameters:
+    subscriptionId:
+      name: subscriptionId
+      in: path
+      required: true
+      description: The ID of the target subscription.
+      schema:
+        type: string
+    apiVersion:
+      name: api-version
+      in: query
+      required: true
+      description: The API version to use for this operation.
+      schema:
+        type: string
+    resourceGroupName:
+      name: resourceGroupName
+      in: path
+      required: true
+      description: The name of the resource group.
+      schema:
+        type: string
   securitySchemes:
     azure_auth:
       type: oauth2

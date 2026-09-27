@@ -32,7 +32,8 @@ apis:
 - aid: microsoft-azure-private-link:microsoft-azure-private-link-operations-api
   name: microsoft-azure-private-link Operations API
   description: Operations operations
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/microsoft-azure-private-link.png
+  image: >-
+    https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/microsoft-azure-private-link.png
   humanURL: https://learn.microsoft.com/en-us/rest/api/azure/
   baseURL: https://management.azure.com/
   tags: []
@@ -48,7 +49,8 @@ apis:
 - aid: microsoft-azure-private-link:microsoft-azure-private-link-private-endpoints-api
   name: microsoft-azure-private-link Private Endpoints API
   description: Private Endpoints operations
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/microsoft-azure-private-link.png
+  image: >-
+    https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/microsoft-azure-private-link.png
   humanURL: https://learn.microsoft.com/en-us/rest/api/virtualnetwork/private-endpoints
   baseURL: https://management.azure.com/
   tags:
@@ -64,13 +66,58 @@ apis:
     url: openapi/_original/microsoft-azure-private-link-private-link-service-swagger.json
   - name: Upstream contract source (Azure/azure-rest-api-specs)
     type: OpenAPI
-    url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/network/resource-manager/Microsoft.Network/Network/stable/2025-03-01/privateEndpoint.json
+    url: >-
+      https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/network/resource-manager/Microsoft.Network/Network/stable/2025-03-01/privateEndpoint.json
   - type: Documentation
     url: https://learn.microsoft.com/en-us/rest/api/virtualnetwork/private-endpoints
   - type: APIReference
     url: https://learn.microsoft.com/en-us/rest/api/virtualnetwork/private-link-services
   - type: Overlay
     url: overlays/microsoft-azure-private-link-private-endpoints-api-overlay.yaml
+- aid: microsoft-azure-private-link:microsoft-azure-private-link-privatednszonegroups-api
+  name: Microsoft Azure Private Link Private Dns Zone Groups API
+  description: >-
+    The PrivateDnsZoneGroups API from Microsoft Azure Private Link — 2 operation(s) for privatednszonegroups.
+  humanURL: https://learn.microsoft.com/en-us/rest/api/azure/
+  baseURL: https://management.azure.com/
+  tags:
+  - PrivateDnsZoneGroups
+  properties:
+  - type: OpenAPI
+    url: openapi/microsoft-azure-private-link-privatednszonegroups-api-openapi.yml
+- aid: microsoft-azure-private-link:microsoft-azure-private-link-privatelinkservice-api
+  name: Microsoft Azure Private Link Private Link Service API
+  description: >-
+    The PrivateLinkService API from Microsoft Azure Private Link — 1 operation(s) for privatelinkservice.
+  humanURL: https://learn.microsoft.com/en-us/rest/api/azure/
+  baseURL: https://management.azure.com/
+  tags:
+  - PrivateLinkService
+  properties:
+  - type: OpenAPI
+    url: openapi/microsoft-azure-private-link-privatelinkservice-api-openapi.yml
+- aid: microsoft-azure-private-link:microsoft-azure-private-link-privatelinkservices-api
+  name: Microsoft Azure Private Link Private Link Services API
+  description: >-
+    The PrivateLinkServices API from Microsoft Azure Private Link — 9 operation(s) for privatelinkservices.
+  humanURL: https://learn.microsoft.com/en-us/rest/api/azure/
+  baseURL: https://management.azure.com/
+  tags:
+  - PrivateLinkServices
+  properties:
+  - type: OpenAPI
+    url: openapi/microsoft-azure-private-link-privatelinkservices-api-openapi.yml
+- aid: microsoft-azure-private-link:microsoft-azure-private-link-subscriptions-api
+  name: Microsoft Azure Private Link Subscriptions API
+  description: >-
+    The Subscriptions API from Microsoft Azure Private Link — 2 operation(s) for subscriptions.
+  humanURL: https://learn.microsoft.com/en-us/rest/api/azure/
+  baseURL: https://management.azure.com/
+  tags:
+  - Subscriptions
+  properties:
+  - type: OpenAPI
+    url: openapi/microsoft-azure-private-link-subscriptions-api-openapi.yml
 common:
   - type: Website
     url: https://www.microsoft.com/

@@ -37,15 +37,6 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
 components:
   schemas:
-    OperationList:
-      type: object
-      properties:
-        value:
-          type: array
-          items:
-            $ref: '#/components/schemas/Operation'
-        nextLink:
-          type: string
     ErrorResponse:
       type: object
       properties:
@@ -76,6 +67,15 @@ components:
               type: string
         isDataAction:
           type: boolean
+    OperationList:
+      type: object
+      properties:
+        value:
+          type: array
+          items:
+            $ref: '#/components/schemas/Operation'
+        nextLink:
+          type: string
   parameters:
     apiVersion:
       name: api-version

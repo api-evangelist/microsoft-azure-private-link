@@ -1,9 +1,16 @@
 {
   "provider": "microsoft-azure-private-link",
   "sources": [
+    "_original/microsoft-azure-private-link-private-endpoint-swagger.json",
+    "_original/microsoft-azure-private-link-private-link-service-swagger.json",
     "_ae-authored/microsoft-azure-private-link-openapi.yml"
   ],
   "outputs": [
+    "microsoft-azure-private-link-privatednszonegroups-api-openapi.yml",
+    "microsoft-azure-private-link-privateendpoints-api-openapi.yml",
+    "microsoft-azure-private-link-subscriptions-api-openapi.yml",
+    "microsoft-azure-private-link-privatelinkservice-api-openapi.yml",
+    "microsoft-azure-private-link-privatelinkservices-api-openapi.yml",
     "microsoft-azure-private-link-operations-api-openapi.yml",
     "microsoft-azure-private-link-private-endpoints-api-openapi.yml"
   ],
@@ -11,9 +18,18 @@
   "errors": [],
   "warnings": [],
   "notes": [
-    "sourced from openapi/_original/ (0 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "sourced from openapi/_original/ (2 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "microsoft-azure-private-link-private-endpoint-swagger.json: upgraded swagger 2.0 -> OpenAPI 3.2.0",
+    "microsoft-azure-private-link-private-endpoint-swagger.json: tagged paths GET /subscriptions/{subscriptionId}/providers/Microsoft.Network/locations/{location}/availablePrivateEndpointTypes -> Subscriptions",
+    "microsoft-azure-private-link-private-endpoint-swagger.json: tagged paths GET /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/locations/{location}/availablePrivateEndpointTypes -> Subscriptions",
+    "microsoft-azure-private-link-private-endpoint-swagger.json: declared missing tag: PrivateDnsZoneGroups",
+    "microsoft-azure-private-link-private-endpoint-swagger.json: declared missing tag: PrivateEndpoints",
+    "microsoft-azure-private-link-private-endpoint-swagger.json: declared missing tag: Subscriptions",
+    "microsoft-azure-private-link-private-link-service-swagger.json: upgraded swagger 2.0 -> OpenAPI 3.2.0",
+    "microsoft-azure-private-link-private-link-service-swagger.json: declared missing tag: PrivateLinkService",
+    "microsoft-azure-private-link-private-link-service-swagger.json: declared missing tag: PrivateLinkServices",
     "microsoft-azure-private-link-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
-    "apis.yml register: already-registered"
+    "apis.yml register: written (+5 apis, 7 total)"
   ],
   "skipped": [
     "microsoft-azure-private-link-operations-api-openapi.yml: previously refined output, superseded by openapi/_original/",
