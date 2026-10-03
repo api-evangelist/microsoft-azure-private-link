@@ -206,18 +206,22 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    PrivateDnsZonePropertiesFormat:
+    PrivateDnsZoneGroup:
       properties:
-        privateDnsZoneId:
+        name:
           type: string
-          description: The resource id of the private dns zone.
-        recordSets:
-          type: array
+          description: Name of the resource that is unique within a resource group. This name can be used to access the resource.
+        etag:
           readOnly: true
-          items:
-            $ref: '#/components/schemas/RecordSet'
-          description: A collection of information regarding a recordSet, holding information to identify private resources.
-      description: Properties of the private dns zone configuration resource.
+          type: string
+          description: A unique read-only string that changes whenever the resource is updated.
+        properties:
+          x-ms-client-flatten: true
+          $ref: '#/components/schemas/PrivateDnsZoneGroupPropertiesFormat'
+          description: Properties of the private dns zone group.
+      allOf:
+      - $ref: ./network.json#/definitions/SubResource
+      description: Private dns zone group resource.
     PrivateDnsZoneGroupPropertiesFormat:
       properties:
         provisioningState:
@@ -266,22 +270,6 @@ components:
             type: string
           description: The private ip address of the private endpoint.
       description: A collective group of information about the record set information.
-    PrivateDnsZoneGroup:
-      properties:
-        name:
-          type: string
-          description: Name of the resource that is unique within a resource group. This name can be used to access the resource.
-        etag:
-          readOnly: true
-          type: string
-          description: A unique read-only string that changes whenever the resource is updated.
-        properties:
-          x-ms-client-flatten: true
-          $ref: '#/components/schemas/PrivateDnsZoneGroupPropertiesFormat'
-          description: Properties of the private dns zone group.
-      allOf:
-      - $ref: ./network.json#/definitions/SubResource
-      description: Private dns zone group resource.
     PrivateDnsZoneConfig:
       properties:
         name:
@@ -292,6 +280,18 @@ components:
           $ref: '#/components/schemas/PrivateDnsZonePropertiesFormat'
           description: Properties of the private dns zone configuration.
       description: PrivateDnsZoneConfig resource.
+    PrivateDnsZonePropertiesFormat:
+      properties:
+        privateDnsZoneId:
+          type: string
+          description: The resource id of the private dns zone.
+        recordSets:
+          type: array
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/RecordSet'
+          description: A collection of information regarding a recordSet, holding information to identify private resources.
+      description: Properties of the private dns zone configuration resource.
   securitySchemes:
     azure_auth:
       type: oauth2

@@ -525,42 +525,24 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    PrivateLinkServiceVisibility:
-      properties:
-        visible:
-          type: boolean
-          description: Private Link Service Visibility (True/False).
-      description: Response for the CheckPrivateLinkServiceVisibility API service call.
-    CheckPrivateLinkServiceVisibilityRequest:
-      properties:
-        privateLinkServiceAlias:
-          type: string
-          description: The alias of the private link service.
-      description: Request body of the CheckPrivateLinkServiceVisibility API service call.
-    PrivateLinkServiceListResult:
+    PrivateEndpointConnectionListResult:
       properties:
         value:
           type: array
           items:
-            $ref: '#/components/schemas/PrivateLinkService'
-          description: A list of PrivateLinkService resources in a resource group.
+            $ref: '#/components/schemas/PrivateEndpointConnection'
+          description: A list of PrivateEndpointConnection resources for a specific private link service.
         nextLink:
           type: string
           description: The URL to get the next set of results.
           readOnly: true
-      description: Response for the ListPrivateLinkService API service call.
-    PrivateLinkServiceConnectionState:
+      description: Response for the ListPrivateEndpointConnection API service call.
+    AutoApprovedPrivateLinkService:
       properties:
-        status:
+        privateLinkService:
           type: string
-          description: Indicates whether the connection has been Approved/Rejected/Removed by the owner of the service.
-        description:
-          type: string
-          description: The reason for approval/rejection of the connection.
-        actionsRequired:
-          type: string
-          description: A message indicating if changes on the service provider require any updates on the consumer.
-      description: A collection of information about the state of the connection between service consumer and provider.
+          description: The id of the private link service resource.
+      description: The information of an AutoApprovedPrivateLinkService.
     PrivateEndpointConnection:
       properties:
         properties:
@@ -581,32 +563,18 @@ components:
       allOf:
       - $ref: ./network.json#/definitions/SubResource
       description: PrivateEndpointConnection resource.
-    PrivateEndpointConnectionListResult:
+    CheckPrivateLinkServiceVisibilityRequest:
       properties:
-        value:
-          type: array
-          items:
-            $ref: '#/components/schemas/PrivateEndpointConnection'
-          description: A list of PrivateEndpointConnection resources for a specific private link service.
-        nextLink:
+        privateLinkServiceAlias:
           type: string
-          description: The URL to get the next set of results.
-          readOnly: true
-      description: Response for the ListPrivateEndpointConnection API service call.
-    AutoApprovedPrivateLinkService:
+          description: The alias of the private link service.
+      description: Request body of the CheckPrivateLinkServiceVisibility API service call.
+    PrivateLinkServiceVisibility:
       properties:
-        privateLinkService:
-          type: string
-          description: The id of the private link service resource.
-      description: The information of an AutoApprovedPrivateLinkService.
-    ResourceSet:
-      properties:
-        subscriptions:
-          type: array
-          items:
-            type: string
-          description: The list of subscriptions.
-      description: The base resource set for visibility and auto-approval.
+        visible:
+          type: boolean
+          description: Private Link Service Visibility (True/False).
+      description: Response for the CheckPrivateLinkServiceVisibility API service call.
     PrivateEndpointConnectionProperties:
       properties:
         privateEndpoint:
@@ -629,6 +597,30 @@ components:
           type: string
           description: The location of the private endpoint.
       description: Properties of the PrivateEndpointConnectProperties.
+    AutoApprovedPrivateLinkServicesResult:
+      properties:
+        value:
+          type: array
+          items:
+            $ref: '#/components/schemas/AutoApprovedPrivateLinkService'
+          description: An array of auto approved private link service.
+        nextLink:
+          readOnly: true
+          type: string
+          description: The URL to get the next set of results.
+      description: An array of private link service id that can be linked to a private end point with auto approved.
+    PrivateLinkServiceConnectionState:
+      properties:
+        status:
+          type: string
+          description: Indicates whether the connection has been Approved/Rejected/Removed by the owner of the service.
+        description:
+          type: string
+          description: The reason for approval/rejection of the connection.
+        actionsRequired:
+          type: string
+          description: A message indicating if changes on the service provider require any updates on the consumer.
+      description: A collection of information about the state of the connection between service consumer and provider.
     PrivateLinkServiceProperties:
       properties:
         loadBalancerFrontendIpConfigurations:
@@ -698,6 +690,18 @@ components:
           type: boolean
           description: Whether the private link service is enabled for proxy protocol or not.
       description: Properties of the private link service.
+    PrivateLinkServiceListResult:
+      properties:
+        value:
+          type: array
+          items:
+            $ref: '#/components/schemas/PrivateLinkService'
+          description: A list of PrivateLinkService resources in a resource group.
+        nextLink:
+          type: string
+          description: The URL to get the next set of results.
+          readOnly: true
+      description: Response for the ListPrivateLinkService API service call.
     PrivateLinkServiceIpConfiguration:
       properties:
         properties:
@@ -734,18 +738,14 @@ components:
       allOf:
       - $ref: ./network.json#/definitions/Resource
       description: Private link service resource.
-    AutoApprovedPrivateLinkServicesResult:
+    ResourceSet:
       properties:
-        value:
+        subscriptions:
           type: array
           items:
-            $ref: '#/components/schemas/AutoApprovedPrivateLinkService'
-          description: An array of auto approved private link service.
-        nextLink:
-          readOnly: true
-          type: string
-          description: The URL to get the next set of results.
-      description: An array of private link service id that can be linked to a private end point with auto approved.
+            type: string
+          description: The list of subscriptions.
+      description: The base resource set for visibility and auto-approval.
     PrivateLinkServiceIpConfigurationProperties:
       properties:
         privateIPAddress:
