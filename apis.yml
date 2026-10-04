@@ -114,11 +114,16 @@ apis:
   humanURL: https://learn.microsoft.com/en-us/rest/api/azure/
   baseURL: https://management.azure.com/
   tags:
+  - Subscription
+  tags_raw:
   - Subscriptions
   properties:
   - type: OpenAPI
     url: openapi/microsoft-azure-private-link-subscriptions-api-openapi.yml
 common:
+  - type: CapabilityMap
+    url: capabilities/microsoft-azure-private-link-capability-edges.yml
+    name: Microsoft Azure Private Link Business Capability Map
   - type: Website
     url: https://www.microsoft.com/
   - type: DeveloperPortal
