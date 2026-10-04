@@ -46,18 +46,6 @@ components:
             $ref: '#/components/schemas/Operation'
         nextLink:
           type: string
-    ErrorResponse:
-      type: object
-      properties:
-        error:
-          type: object
-          properties:
-            code:
-              type: string
-            message:
-              type: string
-            target:
-              type: string
     Operation:
       type: object
       properties:
@@ -76,6 +64,18 @@ components:
               type: string
         isDataAction:
           type: boolean
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+            message:
+              type: string
+            target:
+              type: string
   parameters:
     apiVersion:
       name: api-version

@@ -89,18 +89,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    AvailablePrivateEndpointTypesResult:
-      properties:
-        value:
-          type: array
-          items:
-            $ref: '#/components/schemas/AvailablePrivateEndpointType'
-          description: An array of available privateEndpoint type.
-        nextLink:
-          readOnly: true
-          type: string
-          description: The URL to get the next set of results.
-      description: An array of available PrivateEndpoint types.
     AvailablePrivateEndpointType:
       properties:
         name:
@@ -119,6 +107,18 @@ components:
           type: string
           description: Display name of the resource.
       description: The information of an AvailablePrivateEndpointType.
+    AvailablePrivateEndpointTypesResult:
+      properties:
+        value:
+          type: array
+          items:
+            $ref: '#/components/schemas/AvailablePrivateEndpointType'
+          description: An array of available privateEndpoint type.
+        nextLink:
+          readOnly: true
+          type: string
+          description: The URL to get the next set of results.
+      description: An array of available PrivateEndpoint types.
   securitySchemes:
     azure_auth:
       type: oauth2
