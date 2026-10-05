@@ -1,0 +1,54 @@
+slug: microsoft-azure-private-link
+provider: Microsoft Azure Private Link
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 4
+edges:
+- tag: Private Endpoints
+  spec_file: microsoft-azure-private-link-private-endpoints-api-openapi.yml
+  capability_id: BC-600.50
+  capability_id_l1: BC-600
+  capability_name: IT Infrastructure Management
+  confidence: 0.8
+  evidence: '''PrivateEndpoints_CreateOrUpdate  Private endpoints create or update'' with schemas ''PrivateEndpointIPConfiguration'',
+    ''CustomDnsConfigPropertiesFormat'''
+  reason: Lifecycle management of network private endpoints (IP configuration, DNS) in Azure — cloud network
+    infrastructure management.
+- tag: PrivateLinkServices
+  spec_file: microsoft-azure-private-link-privatelinkservices-api-openapi.yml
+  capability_id: BC-600.50
+  capability_id_l1: BC-600
+  capability_name: IT Infrastructure Management
+  confidence: 0.78
+  evidence: '''PrivateLinkServices_ListPrivateEndpointConnections'' and ''PrivateLinkServices_CheckPrivateLinkServiceVisibility'''
+  reason: Full lifecycle and connection approval management of Azure private link network services — cloud
+    network infrastructure management.
+- tag: PrivateDnsZoneGroups
+  spec_file: microsoft-azure-private-link-privatednszonegroups-api-openapi.yml
+  capability_id: BC-600.50
+  capability_id_l1: BC-600
+  capability_name: IT Infrastructure Management
+  confidence: 0.75
+  evidence: '''PrivateDnsZoneGroups_CreateOrUpdate  Private dns zone groups create or update'' with schema
+    ''RecordSet'''
+  reason: Management of private DNS zone configuration attached to network endpoints — network/cloud infrastructure
+    management.
+- tag: PrivateLinkService
+  spec_file: microsoft-azure-private-link-privatelinkservice-api-openapi.yml
+  capability_id: BC-600.50
+  capability_id_l1: BC-600
+  capability_name: IT Infrastructure Management
+  confidence: 0.75
+  evidence: '''PrivateLinkServices_CreateOrUpdate  Private link services create or update'' with schema
+    ''PrivateLinkServiceIpConfiguration'''
+  reason: Creation of a private link service (network service publishing with IP configuration) — cloud
+    network infrastructure provisioning.
