@@ -1,0 +1,12 @@
+{
+ "url": "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/network/resource-manager/Microsoft.Network/Network/stable/2025-03-01/privateEndpoint.json",
+ "requested_url": "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/network/resource-manager/Microsoft.Network/Network/stable/2025-03-01/privateEndpoint.json",
+ "status": 200,
+ "content_type": "text/plain; charset=utf-8",
+ "bytes": 36422,
+ "sha256": "485ed94da0aad55df48091455ff2b34ab6fecf7912dbb058ad97f7b055be4268",
+ "fetched_at": "2026-10-04",
+ "fetched_by": "APIEvangelist-Harvest/1.0 (+https://apievangelist.com)",
+ "match": "byte-identical",
+ "note": "Re-fetched from the provider by verify-openapi-sources.py; the archived file is byte-identical to what the provider serves."
+}
