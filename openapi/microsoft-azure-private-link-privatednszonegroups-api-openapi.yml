@@ -206,6 +206,42 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    PrivateDnsZonePropertiesFormat:
+      properties:
+        privateDnsZoneId:
+          type: string
+          description: The resource id of the private dns zone.
+        recordSets:
+          type: array
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/RecordSet'
+          description: A collection of information regarding a recordSet, holding information to identify private resources.
+      description: Properties of the private dns zone configuration resource.
+    PrivateDnsZoneGroupListResult:
+      properties:
+        value:
+          type: array
+          items:
+            $ref: '#/components/schemas/PrivateDnsZoneGroup'
+          description: A list of private dns zone group resources in a private endpoint.
+        nextLink:
+          type: string
+          description: The URL to get the next set of results.
+          readOnly: true
+      description: Response for the ListPrivateDnsZoneGroups API service call.
+    PrivateDnsZoneGroupPropertiesFormat:
+      properties:
+        provisioningState:
+          readOnly: true
+          $ref: ./network.json#/definitions/ProvisioningState
+          description: The provisioning state of the private dns zone group resource.
+        privateDnsZoneConfigs:
+          type: array
+          items:
+            $ref: '#/components/schemas/PrivateDnsZoneConfig'
+          description: A collection of private dns zone configurations of the private dns zone group.
+      description: Properties of the private dns zone group.
     PrivateDnsZoneConfig:
       properties:
         name:
@@ -256,42 +292,6 @@ components:
             type: string
           description: The private ip address of the private endpoint.
       description: A collective group of information about the record set information.
-    PrivateDnsZoneGroupListResult:
-      properties:
-        value:
-          type: array
-          items:
-            $ref: '#/components/schemas/PrivateDnsZoneGroup'
-          description: A list of private dns zone group resources in a private endpoint.
-        nextLink:
-          type: string
-          description: The URL to get the next set of results.
-          readOnly: true
-      description: Response for the ListPrivateDnsZoneGroups API service call.
-    PrivateDnsZoneGroupPropertiesFormat:
-      properties:
-        provisioningState:
-          readOnly: true
-          $ref: ./network.json#/definitions/ProvisioningState
-          description: The provisioning state of the private dns zone group resource.
-        privateDnsZoneConfigs:
-          type: array
-          items:
-            $ref: '#/components/schemas/PrivateDnsZoneConfig'
-          description: A collection of private dns zone configurations of the private dns zone group.
-      description: Properties of the private dns zone group.
-    PrivateDnsZonePropertiesFormat:
-      properties:
-        privateDnsZoneId:
-          type: string
-          description: The resource id of the private dns zone.
-        recordSets:
-          type: array
-          readOnly: true
-          items:
-            $ref: '#/components/schemas/RecordSet'
-          description: A collection of information regarding a recordSet, holding information to identify private resources.
-      description: Properties of the private dns zone configuration resource.
   securitySchemes:
     azure_auth:
       type: oauth2
