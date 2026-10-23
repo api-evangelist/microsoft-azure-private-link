@@ -301,3 +301,9 @@ components:
             user_impersonation: impersonate your user account
           authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
       description: Azure Active Directory OAuth2 Flow.
+x-provenance:
+  method: harvested
+  publisher: Microsoft Azure Private Link
+  source: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/network/resource-manager/Microsoft.Network/Network/stable/2025-03-01/privateEndpoint.json
+  note: split by refine-openapis from the provider's own published document, verified by fetch (openapi/_original/*.fetch.json);
+    stamped by stamp-openapi-provenance.py (roadmap#793)
