@@ -1,4 +1,4 @@
-# microsoft-azure-private-link (microsoft-azure-private-link)
+# Microsoft Azure Private Link
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -64,48 +64,157 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Microsoft Azure Private Link enables access to Azure PaaS services and Azure-hosted customer-owned services over a private endpoint in a virtual network, eliminating exposure to the public internet.
+Microsoft Azure Private Link gives a virtual network a private IP address onto an Azure PaaS service, a partner service, or a service the customer publishes themselves, so traffic reaches it across the Microsoft backbone and never traverses the public internet. It has two sides. A consumer creates a private endpoint pointing at a target resource id and attaches a private DNS zone group so the service's own hostname resolves to that private address. A producer publishes a private link service in front of a Standard Load Balancer, hands out an opaque alias, and approves or rejects the connections that arrive — including connections from other tenants. Both sides are managed through the Azure Resource Manager REST API at management.azure.com, which Microsoft publishes as Swagger 2.0 in its azure-rest-api-specs repository: 24 operations at api-version 2025-03-01, OAuth2 bearer only, with no API key and no anonymous surface.
 
-**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/microsoft-azure-private-link/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/microsoft-azure-private-link/refs/heads/main/apis.yml)
+**Areas:** Networking · Private Connectivity · Cloud Infrastructure · Virtual Networks · DNS · Security · Azure Resource Manager · Infrastructure-as-a-Service
 
-## Timestamps
+## Microsoft Azure Private Link on APIs.io
 
-- **Modified:** 2026-05-19
+Everything profiled for Microsoft Azure Private Link is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/microsoft-azure-private-link/](https://apis.io/providers/microsoft-azure-private-link/)** — or go straight to one of the APIs or properties below.
 
-## APIs
+### APIs (6)
 
-### Azure Private Link REST API
+- [microsoft-azure-private-link Operations API](https://apis.io/apis/microsoft-azure-private-link/microsoft-azure-private-link-operations-api/) — Operations operations
+- [microsoft-azure-private-link Private Endpoints API](https://apis.io/apis/microsoft-azure-private-link/microsoft-azure-private-link-private-endpoints-api/) — Private Endpoints operations
+- [Microsoft Azure Private Link Private Dns Zone Groups API](https://apis.io/apis/microsoft-azure-private-link/microsoft-azure-private-link-privatednszonegroups-api/) — The PrivateDnsZoneGroups API from Microsoft Azure Private Link — 2 operation(s) for privatednszonegroups.
+- [Microsoft Azure Private Link Private Link Service API](https://apis.io/apis/microsoft-azure-private-link/microsoft-azure-private-link-privatelinkservice-api/) — The PrivateLinkService API from Microsoft Azure Private Link — 1 operation(s) for privatelinkservice.
+- [Microsoft Azure Private Link Private Link Services API](https://apis.io/apis/microsoft-azure-private-link/microsoft-azure-private-link-privatelinkservices-api/) — The PrivateLinkServices API from Microsoft Azure Private Link — 9 operation(s) for privatelinkservices.
+- [Microsoft Azure Private Link Subscriptions API](https://apis.io/apis/microsoft-azure-private-link/microsoft-azure-private-link-subscriptions-api/) — The Subscriptions API from Microsoft Azure Private Link — 2 operation(s) for subscriptions.
 
-Azure Private Link REST API provides management of private endpoints and private link services for accessing Azure PaaS services over private IP addresses within virtual networks, eliminating exposure to the public internet.
+### Published properties
 
-- **Human URL:** [https://learn.microsoft.com/en-us/rest/api/privatelink/](https://learn.microsoft.com/en-us/rest/api/privatelink/)
-- **Base URL:** `https://management.azure.com/`
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-#### Tags
+#### MCP servers (1)
 
-- Network Security
-- Private Endpoint
-- Private Link
-- VNet
+Model Context Protocol servers that expose the API to agents.
 
-#### Properties
+- [microsoft-azure-private-link-mcp.yml](https://apis.io/servers/microsoft-azure-private-link/microsoft-azure-private-link-mcp-yml/)
 
-- [OpenAPI](openapi/microsoft-azure-private-link-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/microsoft-azure-private-link.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/microsoft-azure-private-link.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Documentation](https://learn.microsoft.com/en-us/rest/api/privatelink/)
+#### Agentic access (1)
 
-## Common Properties
+Which operations an agent can call, which act, and which need a human in the loop.
 
-- [GitHub Organization](https://github.com/Azure)
-- [Portal](https://portal.azure.com/)
-- [Pricing](https://azure.microsoft.com/en-us/pricing/)
-- [Terms of Service](https://www.microsoft.com/en-us/legal/terms-of-use)
-- [Privacy Policy](https://privacy.microsoft.com/en-us/privacystatement)
-- [Support](https://support.microsoft.com/)
-- [L L Ms Txt](https://portal.azure.com/llms.txt)
+- [Microsoft Azure Private Link Agentic Access](https://apis.io/agentic-access/microsoft-azure-private-link/microsoft-azure-private-link-agentic-access/)
 
-## Maintainers
+#### Collections (3)
 
-**FN:** Kin Lane
-**Email:** kin@apievangelist.com
+Postman and Open Collection request collections.
+
+- [Azure Private Link REST API](https://apis.io/collections/microsoft-azure-private-link/open-microsoft-azure-private-link/)
+- [Azure Private Link REST Operations API](https://apis.io/collections/microsoft-azure-private-link/open-microsoft-azure-private-link-operations-api/)
+- [Azure Private Link REST Operations Private Endpoints API](https://apis.io/collections/microsoft-azure-private-link/open-microsoft-azure-private-link-private-endpoints-api/)
+
+#### Overlays (2)
+
+OpenAPI overlays, including conversational phrasing for each operation.
+
+- [Microsoft Azure Private Link Operations Api Overlay](https://apis.io/overlays/microsoft-azure-private-link/microsoft-azure-private-link-operations-api-overlay/)
+- [Microsoft Azure Private Link Private Endpoints Api Overlay](https://apis.io/overlays/microsoft-azure-private-link/microsoft-azure-private-link-private-endpoints-api-overlay/)
+
+#### Security (4)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Microsoft Azure Private Link Authentication](https://apis.io/security/microsoft-azure-private-link/microsoft-azure-private-link-authentication/)
+- [Microsoft Azure Private Link Domain Security](https://apis.io/security/microsoft-azure-private-link/microsoft-azure-private-link-domain-security/)
+- [Microsoft Azure Private Link Trust Center](https://apis.io/security/microsoft-azure-private-link/microsoft-azure-private-link-trust-center/)
+- [Microsoft Azure Private Link Vulnerability Disclosure](https://apis.io/security/microsoft-azure-private-link/microsoft-azure-private-link-vulnerability-disclosure/)
+
+#### OAuth scopes (1)
+
+The permissions the API asks for.
+
+- [Microsoft Azure Private Link Scopes](https://apis.io/scopes/microsoft-azure-private-link/microsoft-azure-private-link-scopes/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Microsoft Azure Private Link Plans Pricing](https://apis.io/plans/microsoft-azure-private-link/microsoft-azure-private-link-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Microsoft Azure Private Link Rate Limits](https://apis.io/rate-limits/microsoft-azure-private-link/microsoft-azure-private-link-rate-limits/)
+
+#### FinOps (1)
+
+What the API costs to run, by operation.
+
+- [Microsoft Azure Private Link Finops](https://apis.io/finops/microsoft-azure-private-link/microsoft-azure-private-link-finops/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://www.microsoft.com/)
+- [Documentation](https://learn.microsoft.com/en-us/azure/private-link/private-link-overview)
+- [Getting started](https://learn.microsoft.com/en-us/azure/private-link/create-private-endpoint-portal)
+- [API reference](https://learn.microsoft.com/en-us/rest/api/virtualnetwork/private-endpoints)
+- [Pricing](https://azure.microsoft.com/en-us/pricing/details/private-link/)
+- [Sign up](https://azure.microsoft.com/en-us/free/)
+- [Support](https://azure.microsoft.com/en-us/support/options/)
+- [Blog](https://techcommunity.microsoft.com/category/azure/blog/azurenetworkingblog)
+- [Security](https://www.microsoft.com/en-us/msrc/cvd)
+- [Compliance](https://learn.microsoft.com/en-us/azure/compliance/)
+- [Terms of service](https://www.microsoft.com/en-us/legal/terms-of-use)
+- [Privacy policy](https://privacy.microsoft.com/en-us/privacystatement)
+- [GitHub](https://github.com/Azure)
+- [Status](https://azure.status.microsoft/en-us/status)
+
+## API Evangelist rating
+
+**Kin Score 62.8** — strong · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 73.2 |
+| Contract quality | 42.2 |
+| Contract governance | 4.5 |
+| Operational transparency | 89.5 |
+| Developer ergonomics | 73.2 |
+| Access clarity | 60.5 |
+
+**Agent readiness 27.7** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | served (partial credit) |
+| Idempotency | derived (partial credit) |
+| Error Semantics | derived (partial credit) |
+| OpenAPI Examples | — |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | na |
+| Operation Distinctiveness | distinct |
+
+**Regulatory alignment 45.1** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/microsoft-azure-private-link/](https://apis.io/providers/microsoft-azure-private-link/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Microsoft Azure Private Link: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/microsoft-azure-private-link/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
