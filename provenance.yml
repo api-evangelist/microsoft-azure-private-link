@@ -53,6 +53,57 @@ artifacts:
   front-door-ai/2026-09-17.yml:
     method: unknown
     evidence: no authorship recorded
+  hosts/microsoft-azure-private-link-hosts.yml:
+    method: derived
+    evidence: declared in the artifact
+  integrations/_index.yml:
+    method: generated
+    evidence: carries an API Evangelist house phrase
+  integrations/microsoft-azure-private-link-integration-edges.yml:
+    method: unknown
+    evidence: no authorship recorded
+  json-ld/microsoft-azure-private-link-context.jsonld:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-private-link-auto-approved-private-link-services-result-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-private-link-available-private-endpoint-types-result-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-private-link-check-private-link-service-visibility-request-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-private-link-operation-list-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-private-link-private-dns-zone-group-list-result-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-private-link-private-dns-zone-group-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-private-link-private-endpoint-connection-list-result-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-private-link-private-endpoint-connection-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-private-link-private-endpoint-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-private-link-private-link-service-list-result-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-private-link-private-link-service-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-private-link-resource-list-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-private-link-resource-schema.json:
+    method: unknown
+    evidence: no authorship recorded
   kin/checks-2026-10-23T222754.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
@@ -128,9 +179,12 @@ artifacts:
   llms/microsoft-azure-private-link-llms-probe.yml:
     method: searched
     evidence: 'derive-llms-provenance.py: harvested'
+  llms/microsoft-azure-private-link-llms-provenance.yml:
+    method: searched
+    evidence: 'derive-llms-provenance.py: harvested'
   llms/microsoft-azure-private-link-llms.txt:
-    method: generated
-    evidence: carries an API Evangelist house phrase
+    method: searched
+    evidence: 'derive-llms-provenance.py: harvested'
   mcp/microsoft-azure-private-link-mcp.yml:
     method: derived
     evidence: declared in the artifact
@@ -182,6 +236,9 @@ artifacts:
   rate-limits/microsoft-azure-private-link-rate-limits.yml:
     method: searched
     evidence: declared in the artifact
+  regulatory/microsoft-azure-private-link-regulatory-posture.yml:
+    method: searched
+    evidence: declared in the artifact
   rules/microsoft-azure-private-link-rules.yml:
     method: generated
     evidence: declared in the artifact
@@ -205,6 +262,12 @@ artifacts:
     evidence: declared in the artifact
   skills/microsoft-azure-private-link-connect-to-paas-service.md:
     method: generated
+    evidence: declared in the artifact
+  vendors/microsoft-azure-private-link-vendors.yml:
+    method: unknown
+    evidence: no authorship recorded
+  vocabulary/microsoft-azure-private-link-vocabulary.yml:
+    method: derived
     evidence: declared in the artifact
   well-known/microsoft-azure-private-link-openid-configuration.json:
     method: unknown
