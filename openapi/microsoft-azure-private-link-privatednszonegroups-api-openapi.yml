@@ -36,8 +36,8 @@ paths:
         description: The name of the private dns zone group.
         schema:
           type: string
-      - $ref: ./network.json#/parameters/ApiVersionParameter
-      - $ref: ./network.json#/parameters/SubscriptionIdParameter
+      - $ref: '#/components/parameters/ApiVersionParameter'
+      - $ref: '#/components/parameters/SubscriptionIdParameter'
       responses:
         '202':
           description: Accepted and the operation will complete asynchronously.
@@ -50,13 +50,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: ./network.json#/definitions/CloudError
+                $ref: '#/components/schemas/CloudError'
       x-ms-long-running-operation: true
       x-ms-long-running-operation-options:
         final-state-via: location
-      x-ms-examples:
-        Delete private dns zone group:
-          $ref: ./examples/PrivateEndpointDnsZoneGroupDelete.json
       summary: Private dns zone groups delete
       x-summary-source: derived
     get:
@@ -83,8 +80,8 @@ paths:
         description: The name of the private dns zone group.
         schema:
           type: string
-      - $ref: ./network.json#/parameters/ApiVersionParameter
-      - $ref: ./network.json#/parameters/SubscriptionIdParameter
+      - $ref: '#/components/parameters/ApiVersionParameter'
+      - $ref: '#/components/parameters/SubscriptionIdParameter'
       responses:
         '200':
           description: Request successful. The operation returns the resulting privateDnsZoneGroup resource.
@@ -97,10 +94,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: ./network.json#/definitions/CloudError
-      x-ms-examples:
-        Get private dns zone group:
-          $ref: ./examples/PrivateEndpointDnsZoneGroupGet.json
+                $ref: '#/components/schemas/CloudError'
       summary: Private dns zone groups get
       x-summary-source: derived
     put:
@@ -127,8 +121,8 @@ paths:
         description: The name of the private dns zone group.
         schema:
           type: string
-      - $ref: ./network.json#/parameters/ApiVersionParameter
-      - $ref: ./network.json#/parameters/SubscriptionIdParameter
+      - $ref: '#/components/parameters/ApiVersionParameter'
+      - $ref: '#/components/parameters/SubscriptionIdParameter'
       responses:
         '200':
           description: Update successful. The operation returns the resulting PrivateDnsZoneGroup resource.
@@ -147,13 +141,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: ./network.json#/definitions/CloudError
+                $ref: '#/components/schemas/CloudError'
       x-ms-long-running-operation: true
       x-ms-long-running-operation-options:
         final-state-via: azure-async-operation
-      x-ms-examples:
-        Create private dns zone group:
-          $ref: ./examples/PrivateEndpointDnsZoneGroupCreate.json
       requestBody:
         content:
           application/json:
@@ -182,8 +173,8 @@ paths:
         description: The name of the resource group.
         schema:
           type: string
-      - $ref: ./network.json#/parameters/ApiVersionParameter
-      - $ref: ./network.json#/parameters/SubscriptionIdParameter
+      - $ref: '#/components/parameters/ApiVersionParameter'
+      - $ref: '#/components/parameters/SubscriptionIdParameter'
       responses:
         '200':
           description: Request successful. The operation returns a list of private dns zone group resources.
@@ -196,86 +187,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: ./network.json#/definitions/Error
-      x-ms-examples:
-        List private endpoints in resource group:
-          $ref: ./examples/PrivateEndpointDnsZoneGroupList.json
+                $ref: '#/components/schemas/Error'
       x-ms-pageable:
         nextLinkName: nextLink
       summary: Private dns zone groups list
       x-summary-source: derived
 components:
   schemas:
-    PrivateDnsZoneGroupPropertiesFormat:
-      properties:
-        provisioningState:
-          readOnly: true
-          $ref: ./network.json#/definitions/ProvisioningState
-          description: The provisioning state of the private dns zone group resource.
-        privateDnsZoneConfigs:
-          type: array
-          items:
-            $ref: '#/components/schemas/PrivateDnsZoneConfig'
-          description: A collection of private dns zone configurations of the private dns zone group.
-      description: Properties of the private dns zone group.
-    PrivateDnsZonePropertiesFormat:
-      properties:
-        privateDnsZoneId:
-          type: string
-          description: The resource id of the private dns zone.
-        recordSets:
-          type: array
-          readOnly: true
-          items:
-            $ref: '#/components/schemas/RecordSet'
-          description: A collection of information regarding a recordSet, holding information to identify private resources.
-      description: Properties of the private dns zone configuration resource.
-    PrivateDnsZoneGroupListResult:
-      properties:
-        value:
-          type: array
-          items:
-            $ref: '#/components/schemas/PrivateDnsZoneGroup'
-          description: A list of private dns zone group resources in a private endpoint.
-        nextLink:
-          type: string
-          description: The URL to get the next set of results.
-          readOnly: true
-      description: Response for the ListPrivateDnsZoneGroups API service call.
-    PrivateDnsZoneConfig:
-      properties:
-        name:
-          type: string
-          description: Name of the resource that is unique within a resource group. This name can be used to access the resource.
-        properties:
-          x-ms-client-flatten: true
-          $ref: '#/components/schemas/PrivateDnsZonePropertiesFormat'
-          description: Properties of the private dns zone configuration.
-      description: PrivateDnsZoneConfig resource.
-    RecordSet:
-      properties:
-        recordType:
-          type: string
-          description: Resource record type.
-        recordSetName:
-          type: string
-          description: Recordset name.
-        fqdn:
-          type: string
-          description: Fqdn that resolves to private endpoint ip address.
-        provisioningState:
-          readOnly: true
-          $ref: ./network.json#/definitions/ProvisioningState
-          description: The provisioning state of the recordset.
-        ttl:
-          type: integer
-          description: Recordset time to live.
-        ipAddresses:
-          type: array
-          items:
-            type: string
-          description: The private ip address of the private endpoint.
-      description: A collective group of information about the record set information.
     PrivateDnsZoneGroup:
       properties:
         name:
@@ -290,8 +208,139 @@ components:
           $ref: '#/components/schemas/PrivateDnsZoneGroupPropertiesFormat'
           description: Properties of the private dns zone group.
       allOf:
-      - $ref: ./network.json#/definitions/SubResource
+      - $ref: '#/components/schemas/SubResource'
       description: Private dns zone group resource.
+    PrivateDnsZonePropertiesFormat:
+      properties:
+        privateDnsZoneId:
+          type: string
+          description: The resource id of the private dns zone.
+        recordSets:
+          type: array
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/RecordSet'
+          description: A collection of information regarding a recordSet, holding information to identify private resources.
+      description: Properties of the private dns zone configuration resource.
+    SubResource:
+      properties:
+        id:
+          type: string
+          description: Resource ID.
+      description: Reference to another subresource.
+      x-ms-azure-resource: true
+    PrivateDnsZoneGroupListResult:
+      properties:
+        value:
+          type: array
+          items:
+            $ref: '#/components/schemas/PrivateDnsZoneGroup'
+          description: A list of private dns zone group resources in a private endpoint.
+        nextLink:
+          type: string
+          description: The URL to get the next set of results.
+          readOnly: true
+      description: Response for the ListPrivateDnsZoneGroups API service call.
+    PrivateDnsZoneGroupPropertiesFormat:
+      properties:
+        provisioningState:
+          readOnly: true
+          $ref: '#/components/schemas/ProvisioningState'
+          description: The provisioning state of the private dns zone group resource.
+        privateDnsZoneConfigs:
+          type: array
+          items:
+            $ref: '#/components/schemas/PrivateDnsZoneConfig'
+          description: A collection of private dns zone configurations of the private dns zone group.
+      description: Properties of the private dns zone group.
+    PrivateDnsZoneConfig:
+      properties:
+        name:
+          type: string
+          description: Name of the resource that is unique within a resource group. This name can be used to access the resource.
+        properties:
+          x-ms-client-flatten: true
+          $ref: '#/components/schemas/PrivateDnsZonePropertiesFormat'
+          description: Properties of the private dns zone configuration.
+      description: PrivateDnsZoneConfig resource.
+    ProvisioningState:
+      type: string
+      readOnly: true
+      description: The current provisioning state.
+      enum:
+      - Succeeded
+      - Updating
+      - Deleting
+      - Failed
+      x-ms-enum:
+        name: ProvisioningState
+        modelAsString: true
+    CloudError:
+      x-ms-external: true
+      properties:
+        error:
+          $ref: '#/components/schemas/CloudErrorBody'
+          description: Cloud error body.
+      description: An error response from the service.
+    Error:
+      properties:
+        code:
+          type: string
+          description: Error code.
+        message:
+          type: string
+          description: Error message.
+        target:
+          type: string
+          description: Error target.
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorDetails'
+          description: Error details.
+        innerError:
+          type: string
+          description: Inner error message.
+      description: Common error representation.
+    RecordSet:
+      properties:
+        recordType:
+          type: string
+          description: Resource record type.
+        recordSetName:
+          type: string
+          description: Recordset name.
+        fqdn:
+          type: string
+          description: Fqdn that resolves to private endpoint ip address.
+        provisioningState:
+          readOnly: true
+          $ref: '#/components/schemas/ProvisioningState'
+          description: The provisioning state of the recordset.
+        ttl:
+          type: integer
+          description: Recordset time to live.
+        ipAddresses:
+          type: array
+          items:
+            type: string
+          description: The private ip address of the private endpoint.
+      description: A collective group of information about the record set information.
+  parameters:
+    SubscriptionIdParameter:
+      name: subscriptionId
+      in: path
+      required: true
+      description: The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
+      schema:
+        type: string
+    ApiVersionParameter:
+      name: api-version
+      in: query
+      required: true
+      description: Client API version.
+      schema:
+        type: string
   securitySchemes:
     azure_auth:
       type: oauth2

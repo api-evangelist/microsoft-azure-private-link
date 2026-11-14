@@ -5,10 +5,19 @@ artifacts:
   agentic-access/microsoft-azure-private-link-agentic-access.yml:
     method: generated
     evidence: declared in the artifact
+  ai-preferences/microsoft-azure-private-link-ai-preferences.yml:
+    method: harvested
+    evidence: declared in the artifact
   authentication/microsoft-azure-private-link-authentication.yml:
     method: derived
     evidence: declared in the artifact
   capabilities/microsoft-azure-private-link-capability-edges.yml:
+    method: unknown
+    evidence: no authorship recorded
+  certification/observations-2026-11-11.jsonl:
+    method: unknown
+    evidence: no authorship recorded
+  certification/status.yml:
     method: unknown
     evidence: no authorship recorded
   changelog/microsoft-azure-private-link-changelog.yml:
@@ -35,14 +44,23 @@ artifacts:
   collections/microsoft-azure-private-link.postman_collection.json:
     method: derived
     evidence: openapi/microsoft-azure-private-link
+  compliance/microsoft-azure-private-link-compliance.yml:
+    method: harvested
+    evidence: declared in the artifact
   conformance/microsoft-azure-private-link-conformance.yml:
     method: derived
     evidence: declared in the artifact
   conventions/microsoft-azure-private-link-conventions.yml:
     method: derived
     evidence: declared in the artifact
+  data-license/microsoft-azure-private-link-data-license.yml:
+    method: harvested
+    evidence: declared in the artifact
   data-model/microsoft-azure-private-link-data-model.yml:
     method: derived
+    evidence: declared in the artifact
+  eligibility/microsoft-azure-private-link-eligibility.yml:
+    method: harvested
     evidence: declared in the artifact
   errors/microsoft-azure-private-link-problem-types.yml:
     method: derived
@@ -107,7 +125,7 @@ artifacts:
   kin/checks-2026-10-23T222754.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
-  kin/checks-2026-11-02T082323.yml:
+  kin/checks-2026-11-06T143934.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
   kin/score-2026-09-23T000603.yml:
@@ -173,6 +191,9 @@ artifacts:
   kin/score-2026-11-02T082323.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-11-06T143934.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
   lifecycle/microsoft-azure-private-link-lifecycle.yml:
     method: searched
     evidence: declared in the artifact
@@ -192,6 +213,20 @@ artifacts:
     method: harvested
     evidence: found in openapi/_original/; the fetch URL and bytes were not recorded, so byte-identity
       to the provider's source is unverified
+  ? openapi/_original/microsoft-azure-private-link-network-resource-manager-Microsoft.Network-Network-stable-2025-03-01-privateEndpoint.json
+  : method: harvested
+    evidence: found in openapi/_original/; the fetch URL and bytes were not recorded, so byte-identity
+      to the provider's source is unverified
+  ? openapi/_original/microsoft-azure-private-link-network-resource-manager-Microsoft.Network-Network-stable-2025-03-01-privateEndpoint.json.provenance.txt
+  : method: searched
+    evidence: declared in the artifact
+  ? openapi/_original/microsoft-azure-private-link-network-resource-manager-Microsoft.Network-Network-stable-2025-03-01-privateLinkService.json
+  : method: harvested
+    evidence: found in openapi/_original/; the fetch URL and bytes were not recorded, so byte-identity
+      to the provider's source is unverified
+  ? openapi/_original/microsoft-azure-private-link-network-resource-manager-Microsoft.Network-Network-stable-2025-03-01-privateLinkService.json.provenance.txt
+  : method: searched
+    evidence: declared in the artifact
   openapi/_original/microsoft-azure-private-link-private-endpoint-swagger.json:
     method: harvested
     evidence: byte-identical to https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/network/resource-manager/Microsoft.Network/Network/stable/2025-03-01/privateEndpoint.json
@@ -204,8 +239,8 @@ artifacts:
     method: unknown
     evidence: no authorship recorded
   openapi/microsoft-azure-private-link-private-endpoints-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/microsoft-azure-private-link-privatednszonegroups-api-openapi.yml:
     method: derived
     evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
@@ -262,6 +297,9 @@ artifacts:
     evidence: declared in the artifact
   skills/microsoft-azure-private-link-connect-to-paas-service.md:
     method: generated
+    evidence: declared in the artifact
+  terms/microsoft-azure-private-link-terms-of-service.yml:
+    method: harvested
     evidence: declared in the artifact
   vendors/microsoft-azure-private-link-vendors.yml:
     method: unknown
